@@ -61,6 +61,9 @@ Write-up in Markdown.
 If anything is wrong (unknown tag, bad date, typo'd field name, missing `coverAlt`), `npm run build`
 fails and names the file and field.
 
+**Launch check:** every build fails if the text `TODO(Justin)` or any draft content ends up in the built site
+(see `src/integrations/launch-check.mjs`). Unwritten Home/About text simply doesn't render on the live site.
+
 **Drafts:** entries with `draft: true` never appear on the live site, but `npm run dev` shows them
 (marked "Draft") so you can review them. Delete the `draft: true` line to publish.
 

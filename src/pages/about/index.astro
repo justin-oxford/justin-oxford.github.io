@@ -21,9 +21,11 @@ const aboutIsTodo = site.about.startsWith('TODO(');
   <div class="container">
     <PageBanner title="About" />
 
-    <section class="container--narrow intro" aria-label="Introduction">
-      {paragraphs.map((p) => <p class:list={{ todo: aboutIsTodo }}>{p}</p>)}
-    </section>
+    {paragraphs.length > 0 && (
+      <section class="container--narrow intro" aria-label="Introduction">
+        {paragraphs.map((p) => <p class:list={{ todo: aboutIsTodo }}>{p}</p>)}
+      </section>
+    )}
 
     <div class="columns">
       <section class="panel" aria-labelledby="career">

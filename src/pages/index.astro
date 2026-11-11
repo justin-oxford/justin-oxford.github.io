@@ -17,7 +17,7 @@ const bioIsTodo = site.bio.startsWith('TODO(');
   <!-- Old site home: big centered name, a short intro, then a row of rounded buttons -->
   <section class="container hero" aria-labelledby="name">
     <h1 id="name">{site.name}</h1>
-    <p class:list={['bio', { todo: bioIsTodo }]}>{site.bio}</p>
+    {site.bio && <p class:list={['bio', { todo: bioIsTodo }]}>{site.bio}</p>}
     <ul class="actions">
       <li>
         <Button href={site.github} variant="alt"><Icon name="github" />GitHub</Button>

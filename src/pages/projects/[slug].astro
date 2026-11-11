@@ -2,7 +2,7 @@
 // Project detail: /projects/<slug>/ (slug = Markdown filename).
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
 import DateRange from '../../components/DateRange.astro';
@@ -21,9 +21,18 @@ const { data } = project;
 const { Content } = await render(project);
 const { repo, live, download } = data.links;
 const hasLinks = Boolean(repo || live || download);
+
+// Share image: the project's cover (as a 1200px JPEG) when it has one, otherwise the site default.
+const shareImage = data.cover ? (await getImage({ src: data.cover, width: 1200, format: 'jpg' })).src : undefined;
 ---
 
-<BaseLayout title={data.title} description={data.summary}>
+<BaseLayout
+  title={data.title}
+  description={data.summary}
+  image={shareImage}
+  imageAlt={data.cover ? data.coverAlt : undefined}
+  ogType="article"
+>
   <article class="container container--narrow project">
     <!-- Old project page: small gray date, centered title with sage underline, gray subtitle -->
     <header class="head">

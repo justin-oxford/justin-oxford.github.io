@@ -5,6 +5,15 @@ import { parse as parseYaml } from 'yaml';
 
 const editable = parseYaml(readFileSync('src/data/site.yaml', 'utf8')) as { bio?: string; about?: string };
 
+// Unwritten text shows as a TODO(Justin) placeholder in `npm run dev`, and as nothing on the
+// live site (the launch check fails the build if a TODO ever ships).
+const text = (value: string | undefined, placeholder: string) => {
+  const v = value?.trim() ?? '';
+  const unwritten = !v || v.startsWith('TODO(');
+  if (!unwritten) return v;
+  return import.meta.env.DEV ? placeholder : '';
+};
+
 export const site = {
   name: 'Justin Oxford',
   // Contact is the domain email only (Site Rules #5).
@@ -12,9 +21,9 @@ export const site = {
   github: 'https://github.com/justin-oxford',
   signOff: 'Safe Travels', // from the old site's footer
   // Home page intro, from src/data/site.yaml.
-  bio: editable?.bio?.trim() || 'TODO(Justin): short bio, 2–4 sentences.',
+  bio: text(editable?.bio, 'TODO(Justin): short bio, 2–4 sentences.'),
   // About page intro, from src/data/site.yaml. Blank lines separate paragraphs.
-  about: editable?.about?.trim() || 'TODO(Justin): a short narrative for the About page.',
+  about: text(editable?.about, 'TODO(Justin): a short narrative for the About page.'),
   nav: [
     { href: '/', label: 'Home' },
     { href: '/projects/', label: 'Projects' },

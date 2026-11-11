@@ -42,5 +42,3 @@ Three circuits: Indiana Speedway, Fort Smith, and Napoli.
 ## Built with
 
 JavaScript and jQuery on the front end, PHP and SQL for timing, and Photoshop for the car and track graphics. It started as a yellow rectangle you could drive around the screen (v0.01) and grew from there.
-
-TODO(Justin): a screenshot for the cover.

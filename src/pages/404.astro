@@ -1,0 +1,47 @@
+---
+// GitHub Pages serves dist/404.html for any missing path.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist on justinoxford.com." noindex>
+  <section class="container container--narrow lost" aria-labelledby="lost-title">
+    <p class="code" aria-hidden="true">404</p>
+    <h1 id="lost-title">Off the charts</h1>
+    <p class="muted">That page doesn't exist, or it moved when the site was rebuilt.</p>
+    <ul class="actions">
+      <li><Button href="/">Home</Button></li>
+      <li><Button href="/projects/" variant="ghost">Projects</Button></li>
+      <li><Button href="/writing/" variant="ghost">Writing<Icon name="arrow" /></Button></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    padding-block: var(--sp-8);
+    text-align: center;
+  }
+  .code {
+    margin: 0;
+    font-size: clamp(5rem, 3rem + 10vw, 9rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: var(--tracking-title);
+    background: linear-gradient(330deg, var(--c-primary) 0%, var(--c-terracotta) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  h1 { margin: var(--sp-4) 0 var(--sp-3); font-size: var(--fs-2xl); }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-4);
+    margin: var(--sp-6) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>
