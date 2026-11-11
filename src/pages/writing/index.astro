@@ -1,9 +1,140 @@
 ---
-// Placeholder until the "Writing" card replaces it.
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ComingSoon from '../../components/ComingSoon.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import Icon from '../../components/Icon.astro';
+import { getPublishedWriting, kindLabel, pdfSize } from '../../lib/writing';
+
+const entries = await getPublishedWriting();
 ---
 
-<BaseLayout title="Writing" description="Writing · Justin Oxford">
-  <ComingSoon title="Writing" />
+<BaseLayout title="Writing" description="Essays, papers, and short stories by Justin Oxford.">
+  <div class="container">
+    <PageBanner title="Writing" />
+
+    {
+      entries.length > 0 ? (
+        <ul class="panel list">
+          {entries.map(({ data }) => (
+            <li class:list={['item', { draft: data.draft }]}>
+              <div class="text">
+                <p class="meta">
+                  <span class="year">{data.year}</span>
+                  <span class="kind">{kindLabel[data.kind]}</span>
+                  {data.draft && <span class="draft-tag">Draft</span>}
+                </p>
+                <h2 class="title">{data.title}</h2>
+                <p class="summary">{data.summary}</p>
+              </div>
+              {data.pdf && (
+                <div class="action">
+                  <a class="read" href={data.pdf}>
+                    Read<span class="visually-hidden"> {data.title} (PDF, {pdfSize(data.pdf)})</span>
+                    <Icon name="arrow" />
+                  </a>
+                  <span class="size" aria-hidden="true">PDF · {pdfSize(data.pdf)}</span>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty muted">No writing here yet.</p>
+      )
+    }
+  </div>
 </BaseLayout>
+
+<style>
+  /* Old site "Recent Writing" panel: 30px panel, rows split by dividers,
+     semibold titles, lavender-gray descriptions, lavender view button */
+  .list {
+    margin: 0;
+    padding: var(--sp-2) var(--sp-6);
+    list-style: none;
+  }
+  .item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--sp-3) var(--sp-6);
+    padding: var(--sp-5) 0;
+    border-bottom: var(--rule);
+  }
+  .item:last-child { border-bottom: 0; }
+  .item.draft { border-left: 3px dashed var(--c-terracotta); padding-left: var(--sp-4); }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-3);
+    margin: 0 0 var(--sp-2);
+    font-size: var(--fs-sm);
+  }
+  .year { font-weight: 600; color: var(--c-text); }
+  .kind {
+    padding: 2px 12px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--c-text-muted);
+    background: var(--c-chip);
+    border-radius: var(--radius-pill);
+  }
+  .draft-tag {
+    padding: 2px 10px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking);
+    text-transform: uppercase;
+    color: var(--c-bg);
+    background: var(--c-terracotta);
+    border-radius: var(--radius-pill);
+  }
+  .title {
+    margin: 0 0 var(--sp-2);
+    font-size: 1.375rem; /* old item title: 22px/600 */
+    font-weight: 600;
+    color: var(--c-text);
+  }
+  .summary {
+    margin: 0;
+    max-width: 44rem;
+    color: var(--c-secondary);
+  }
+  .read {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: 0.6rem 1rem;
+    font-size: 1.1875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--c-text);
+    background: var(--c-primary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-btn);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .read:hover {
+    color: var(--c-text);
+    background: #7d79c9;
+    box-shadow: var(--shadow-btn-hover);
+  }
+  .action {
+    display: grid;
+    justify-items: center;
+    gap: var(--sp-1);
+  }
+  .size {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--c-secondary);
+  }
+  .empty { padding: var(--sp-7) 0; text-align: center; }
+
+  @media (max-width: 40rem) {
+    .list { padding-inline: var(--sp-4); }
+    .item { grid-template-columns: 1fr; }
+    .action { justify-items: start; }
+  }
+</style>

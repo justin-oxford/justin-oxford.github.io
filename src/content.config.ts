@@ -1,6 +1,6 @@
 // Content collections and their schemas.
 // See the "Content Model" reference card on the Trello board for the rationale.
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { defineCollection } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
@@ -84,11 +84,16 @@ const writing = defineCollection({
     .object({
       title: z.string().min(1),
       year: z.number().int().min(1900).max(2100),
-      kind: z.enum(['essay', 'paper', 'article']),
+      kind: z.enum(['essay', 'paper', 'article', 'story']),
       summary: z.string().min(1),
+      // Site path of the PDF. The file itself lives in src/docs/ (same subpath) and is only
+      // copied into the build for published entries; see src/pages/docs/[...path].ts.
       pdf: z
         .string()
         .regex(/^\/docs\/.+\.pdf$/, 'pdf must be a path under /docs/, e.g. /docs/essays/laplace.pdf')
+        .refine((p) => existsSync(`src${p}`), {
+          error: (issue) => `PDF not found: put the file at src${String(issue.input)}`,
+        })
         .optional(),
       draft: z.boolean().default(false),
     })

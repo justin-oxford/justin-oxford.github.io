@@ -56,7 +56,8 @@ fails and names the file and field.
 | Path | What |
 | --- | --- |
 | `src/content/projects/*.md` | One file per project |
-| `src/content/writing/*.md` | One file per essay/paper (`title`, `year`, `kind`, `summary`, `pdf`, `draft`); PDFs go in `public/docs/` |
+| `src/content/writing/*.md` | One file per essay/paper/story (`title`, `year`, `kind`, `summary`, `pdf`, `draft`) |
+| `src/docs/**.pdf` | Writing PDFs. `pdf: /docs/essays/x.pdf` means the file at `src/docs/essays/x.pdf`; only PDFs of published entries are copied into the site |
 | `src/data/tags.yaml` | Tag vocabulary (`id`, `label`) |
 | `src/data/timeline.yaml` | Career timeline (`start`, `end?`, `org`, `role`, `summary`) |
 | `src/data/certificates.yaml` | Certificates & ratings (`name`, `detail?`), in display order |
