@@ -10,14 +10,17 @@ permissions:
   pages: write
   id-token: write
 
-# One deploy at a time; a newer push supersedes a queued one.
+# One deploy at a time. A newer push cancels an older run that's still going,
+# so rapid Pages CMS saves don't queue up; the newest content always wins.
+# (Group renamed from "pages" on 2026-11-11 to get past a run GitHub left stuck holding that lock.)
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: deploy-pages
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10 # a hung build fails instead of blocking later deploys
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -29,6 +32,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
