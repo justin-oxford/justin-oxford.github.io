@@ -1,0 +1,24 @@
+/* ARCHIVE (2026): banner added around the preserved 2019 game. Colors from the game's own palette. */
+#archiveBanner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 6px 16px;
+  background: rgba(0, 0, 0, 0.85);
+  border-top: 1px solid #5c6d70;
+  color: #f1faee;
+  font: 13px/1.5 "Formula 1 Display Regular", system-ui, sans-serif;
+  text-align: center;
+}
+#archiveBanner p { margin: 0; }
+#archiveBanner a { color: #a8dadc; margin-left: 8px; white-space: nowrap; }
+#archiveBanner a:hover { color: #f1faee; }
+#archiveBanner a:focus-visible { outline: 2px solid #a8dadc; outline-offset: 2px; }
+
+/* Desktop-only notice: shown on narrow screens and touch devices. */
+#archiveBanner .archive-desktop { display: none; color: #e63946; font-weight: bold; }
+@media (max-width: 1300px), (pointer: coarse) {
+  #archiveBanner .archive-desktop { display: block; }
+}

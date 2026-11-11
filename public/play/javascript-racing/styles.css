@@ -1,0 +1,709 @@
+/*
+
+COLORS:
+
+Color    |  HEX  |   R    G    B
+---------|-------|--------------
+Dark Grey: 484a47;  72,  74,  71
+Dark Blue: 5c6d70;  92, 109, 112
+Lite Blue: a8dadc; 168, 218, 220
+Bold  Red: e63946; 230,  57,  70
+Off White: f1faee; 241, 250, 238
+---------|-------|--------------
+
+*/
+
+/* ARCHIVE (2026): the original Formula1 fonts are proprietary and aren't shipped.
+   The same family names now point at Titillium Web (SIL OFL 1.1, see fonts/), so no rules change. */
+@font-face{
+    font-family: "Formula 1 Display Regular";
+    src: url('fonts/titillium-web-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face{
+    font-family: "Formula 1 Display Bold";
+    src: url('fonts/titillium-web-latin-700-normal.woff2') format('woff2');
+    font-weight: normal;
+}
+
+#debug {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 50px;
+    background-color:rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 8px;
+    font-family: sans-serif;
+}
+
+#telemetryRAW {
+    position: absolute;
+    top:200px;
+    left:50%;
+    width:200px;
+    height:250px;
+    margin:0 0 0 -100px;
+    background-color:rgba(0,0,0,0.3);
+    color: white;
+}
+
+.telemetryTitle {
+    text-align: center;
+}
+
+#telemTable {
+    width: 100%;
+    height: 100%;
+    border: 1px solid silver;
+    border-collapse: collapse;
+    vertical-align: top;
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+#telemTable tr td {
+    border: 1px solid silver;
+}
+
+body {
+    background-color: #000000;
+    overflow: hidden;
+}
+
+canvas {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    margin: 0 0 0 -640px;
+    border: 1px solid #5c6d70;
+    background-color: grey;
+    z-index: -100;
+}
+
+p {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+
+#menuButton {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    height: 30px;
+    width: 30px;
+    margin: 0 0 0 -625px;
+    background-image: url("images/menuBLK.png");
+    background-size: 30px 30px;
+    cursor: pointer;
+}
+
+#menuButton:hover {
+    background-image: url("images/menuWHT.png");
+}
+
+#timeDropButton {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    height: 30px;
+    width: 30px;
+    margin: 0 0 0 580px;
+    background-image: url("images/timeBLK.png");
+    background-size: 30px 30px;
+    cursor: pointer;
+}
+
+#timeDropButton:hover {
+    background-image: url("images/timeWHT.png");
+}
+
+#timingBar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 50px;
+    font-family: "Formula 1 Display Regular";
+    font-size: 8px;
+    background-color: #252525;
+}
+
+#lapsAndSpeed {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    margin: 0 0 0 -575px;
+    color: #f1faee;
+    vertical-align: middle;
+}
+
+#lapCounter {
+    font-family: "Formula 1 Display Bold";
+    font-size: 20px;
+    padding: 0 30px 0 5px;
+}
+
+#carSpeed {
+    font-family: "Formula 1 Display Bold";
+    font-size: 20px;
+    padding: 0 5px 0 5px;
+}
+
+#currentTimer {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    width: 150px;
+    height: 30px;
+    margin: 0 0 0 -125px;
+    font-size: 12px;
+    color: #f1faee;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#currentLap {
+    font-family: "Formula 1 Display Bold";
+    font-size: 20px;
+    width: 100px;
+    padding: 0 10px;
+}
+
+
+#sectorsAndSplits {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    margin: 0 0 0 75px;
+    height: 50px;
+    width: 500px;
+    border-collapse: collapse;
+    font-family: "Formula 1 Display Regular";
+    color: #f1faee;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#sectorsAndSplits tr td {
+    width: 125px;
+    padding: 0 3px;
+}
+
+.timeDisplay {
+    padding: 2px 0 2px 0;
+    font-family: "Formula 1 Display Regular";
+    font-size: 14px;
+    color: #f1faee;
+    border-radius: 6px;
+    background-color: #484a47;
+}
+
+#prevLap {
+    font-family: "Formula 1 Display Bold";
+}
+
+#idents {
+    font-size: 7px;
+    height: 11px;
+    vertical-align: bottom;
+}
+
+#splits {
+    font-size: 8px;
+    height: 15px;
+    vertical-align: top;
+}
+
+
+
+
+
+#timingDropDown {
+    position: absolute;
+    top: -225px;
+    left: 50%;
+    width: 550px;
+    height: 200px;
+    margin: 0 0 0 50px;
+    background-color: rgba(37,37,37,0.9);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    z-index:-95;
+    transition-duration: 0.5s;
+}
+
+#personalBestTitle {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 150px;
+    height: 20px;
+    margin: 0 0 0 -75px;
+    font-family: "Formula 1 Display Regular";
+    color: #a8dadc;
+    font-size: 11px;
+    text-align: center;
+}
+
+#personalBestDisplay {
+    position: absolute;
+    left: 25px;
+    top: 30px;
+    width: 500px;
+
+    font-family: "Formula 1 Display Regular";
+    color: #f1faee;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#identsPB {
+    font-size: 10px;
+}
+
+#personBests {
+    font-family: "Formula 1 Display Bold";
+    font-size: 16px;
+}
+
+#splitsPB {
+    font-size: 12px;
+}
+
+#dropDownHR {
+    position: absolute;
+    top: 100px;
+    left: 25px;
+    width: 500px;
+    height: 1px;
+    border: 0 solid #a8dadc;
+    background-color: #a8dadc;
+}
+
+#otherInfoDisplay {
+    position: absolute;
+    left: 25px;
+    top: 115px;
+    width: 500px;
+
+    font-family: "Formula 1 Display Regular";
+    color: #f1faee;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#otherInfoDisplay tr td {
+    width: 275px;
+    padding: 0 25px;
+}
+
+#identsOI {
+    font-size: 10px;
+}
+
+#otherInfo {
+    font-family: "Formula 1 Display Bold";
+    font-size: 16px;
+}
+
+#descOI {
+    font-size: 8px;
+}
+
+#settingsAndSetup {
+    position: absolute;
+    left: 50%;
+    top: -550px;
+    width: 350px;
+    height: 550px;
+    margin: 0 0 0 -635px;
+    background-color: rgba(37,37,37,0.9);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    z-index:-99;
+    transition-duration: 0.5s;
+}
+
+#settings {
+    position: absolute;
+    left: 30px;
+    top: 10px;
+    width: 325px;
+}
+
+#teamSelTitle {
+    width: 300px;
+    margin: 25px 0 0 0;
+    font-family: "Formula 1 Display Bold";
+    color: #f1faee;
+    text-align: center;
+}
+
+#teamsTable {
+    width: 300px;
+    border-collapse: collapse;
+}
+
+#teamsTable tr {
+    width: 100px;
+}
+
+#teamsTable tr td {
+    width: 100px;
+    height: 100px;
+}
+
+#selectTeam {
+    position: absolute;
+    top: 0px;
+    height: 30px;
+    font-family: "Formula 1 Display Regular";
+    font-size: 12px;
+    padding: 5px 8px 5px 8px;
+    border-radius: 6px;
+    text-align: center;
+    color: #f1faee;
+    background-color: #484a47;
+    border: none;
+}
+
+.teamOption {
+    height: 50px;
+    width: 90px;
+    padding: 35px 0 0 0;
+    border: none;
+    border-radius: 6px;
+    font-family: "Formula 1 Display Bold";
+    font-size: 10px;
+    color: #f1faee;
+    text-align: center;
+    background-color: blue;
+    cursor: pointer;
+}
+
+.teamOption:hover {
+    -moz-box-shadow:    inset 0 0 10px #fff;
+    -webkit-box-shadow: inset 0 0 10px #fff;
+    box-shadow:         inset 0 0 10px #fff;
+}
+
+#silber {
+    background-color: rgba(150,150,150,0.8);
+}
+
+#cavalli {
+    background-color: rgba(256,0,0,0.8);
+}
+
+#bluebull {
+    background-color: rgba(0,0,128,0.8);
+}
+
+#mcfaren {
+    background-color: rgba(256,128,0,0.8);
+}
+
+#fucolt {
+    background-color: rgba(256,256,0,0.8);
+    color: #363636;
+}
+
+#betajuli {
+    background-color: rgba(128,0,0,0.8);
+}
+
+#stroll {
+    background-color: rgba(256,0,200,0.8);
+}
+
+#toroblu {
+    background-color: rgba(0,0,256,0.8);
+}
+
+#stewart {
+    background-color: rgba(25,25,25,0.8);
+    color: goldenrod;
+}
+
+#trilli {
+    background-color: rgba(256,256,256,0.8);
+    color: blue;
+}
+
+#motus {
+    background-color: rgba(0,128,0,0.8);
+}
+
+#specSelTitle {
+    width: 300px;
+    margin: 0px 0 10px 0;
+    font-family: "Formula 1 Display Bold";
+    color: #f1faee;
+    text-align: center;
+}
+
+#specTable {
+    font-family: "Formula 1 Display Regular";
+    width: 300px;
+    border-collapse: collapse;
+    color: #f1faee;
+    font-size: 10px;
+    text-align: center;
+}
+
+#specTable tr td {
+    width: 100px;
+    padding: 0 0 5px 0;
+}
+
+.specOption {
+    width: 90px;
+    padding: 10px 0 10px 0;
+    border: none;
+    border-radius: 6px;
+    font-family: "Formula 1 Display Bold";
+    font-size: 10px;
+    color: #f1faee;
+    text-align: center;
+    background-color: #f1faee;
+    cursor: pointer;
+}
+
+.specOption:hover {
+    -moz-box-shadow:    inset 0 0 10px #555;
+    -webkit-box-shadow: inset 0 0 10px #555;
+    box-shadow:         inset 0 0 10px #555;
+}
+
+#c1 {
+    color: #e63946;
+    margin: auto;
+}
+
+#c2 {
+    color: blue;
+    margin: auto;
+}
+
+#c3 {
+    color: green;
+    margin: auto;
+}
+
+
+#selectTeam:hover {
+    background-color: #5c6d70;
+    cursor: pointer;
+}
+
+#selectTeam:focus {
+    outline: none;
+}
+
+
+
+#teamButton {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100px;
+    margin: 0 0 0 -25px;
+    height: 30px;
+    font-family: "Formula 1 Display Regular";
+    font-size: 10px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #5c6d70; 
+    color: #f1faee;
+    border: none;
+    cursor: pointer;
+}
+
+#teamButton:hover {
+    background-color: #00a651;
+    color: #484a47;
+}
+
+#teamButton:focus {
+    outline: none;
+}
+
+#spec {
+    font-family: "Formula 1 Display Regular";
+    font-size: 14px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: white;
+}
+
+#spec:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+#specButton {
+    font-family: "Formula 1 Display Regular";
+    font-size: 14px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: white; 
+}
+
+#specButton:hover {
+    background-color: lawngreen;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#setupsAndStats {
+    position: absolute;
+    left: 50%;
+    top: -550px;
+    width: 400px;
+    height: 550px;
+    margin: 0 0 0 230px;
+    background-color: rgba(37,37,37,0.9);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    z-index:-99;
+    transition-duration: 0.5s;
+
+    font-family: "Formula 1 Display Regular";
+    color: #f1faee;
+    text-align: center;
+}
+
+#stats{
+    margin: 15px 0 0 0;
+}
+
+#statsTable {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    margin: 0 0 0 0;
+    border-collapse: collapse;
+}
+
+#statsTable tr td {
+    padding: 5px;
+}
+
+#otherStats {
+    position: absolute;
+    left: 50%;
+    top: 75px;
+    width: 50%;
+    height: 200px;
+}
+
+#fuelLevelDisplay {
+    position: absolute;
+    left: 50%;
+    top: 25px;
+    width: 140px;
+    height: auto;
+    margin: 0 0 0 -70px;
+    padding: 10px 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid white;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#fuelMarker {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 100%;
+    height: 150px;
+    margin: 0 0 0 0;
+    background-color: rgba(256, 256, 0, 0.5);
+}
+
+.tyreDisplay {
+    width: 50px;
+    height: auto;
+    padding: 35px 5px;
+    font-size: 10px;
+    color: #f1faee;
+    border: 1px solid #f1faee;
+    border-radius: 12px;
+    background-color: rgba(0,0,0,0.5);
+}
+
+#setups {
+    position: absolute;
+    top: 250px;
+    left: 20px;
+    width: 360px;
+    height: 270px;
+    padding: 10px 0 0 0;
+    border-top: 1px solid grey;
+}
+
+#setupTable {
+    width: 360px;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+#setupTable tr td{
+    width: 180px;
+    padding: 20px;
+}
+
+.upSetupButton {
+    margin: 10px 0 0 0;
+    background-color: rgba(230,  57,  70, 0.3);
+    border: 1px solid #f1faee;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    cursor: pointer;
+}
+
+.upSetupButton:hover {
+    background-color: rgba(230,  57,  70, 0.9);
+}
+
+.dnSetupButton {
+    margin: -1px 0 10px 0;
+    background-color: rgba(230,  57,  70, 0.3);
+    border: 1px solid #f1faee;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
+}
+
+.dnSetupButton:hover {
+    background-color: rgba(230,  57,  70, 0.9);
+}
+
+.setupSettingDisplay {
+    margin: -1px 0 -1px 0;
+    padding: 5px;
+    background-color: rgba(72,  74,  71, 0.5);
+    border: 1px solid #f1faee;
+    border-radius: 0;
+    cursor: default;
+}

@@ -8,7 +8,7 @@ tags: [javascript, game-dev, racing, physics]
 draft: true
 links:
   repo: https://github.com/justin-oxford/javascript-racing
-# links.live: /play/javascript-racing/ once the playable-archive card ships
+  live: /play/javascript-racing/
 ---
 An F1-style time-trial game that runs in the browser. It was my first large-scale personal project, and it taught me PHP, SQL, and JavaScript in more detail than any tutorial had.
 
