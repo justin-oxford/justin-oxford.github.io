@@ -1,0 +1,21 @@
+# Controlled tag vocabulary for projects.
+# Every tag used in src/content/projects/*.md must have an entry here,
+# or the build fails. `id` is what goes in frontmatter; `label` is what's displayed.
+- id: javascript
+  label: JavaScript
+- id: python
+  label: Python
+- id: game-dev
+  label: Game Dev
+- id: modding
+  label: Modding
+- id: machine-learning
+  label: Machine Learning
+- id: physics
+  label: Physics
+- id: aviation
+  label: Aviation
+- id: web
+  label: Web
+- id: bot
+  label: Bot

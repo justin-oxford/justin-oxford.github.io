@@ -1,0 +1,3 @@
+# Career timeline, oldest first. Filled in by the About card.
+# Each entry: { start, end?, org, role, summary }. start/end are a year (2019) or YYYY-MM.
+[]

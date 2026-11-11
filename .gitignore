@@ -1,0 +1,23 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# environment variables / secrets (never commit these)
+.env*
+
+# logs
+npm-debug.log*
+error_log
+debug.log
+
+# legacy-repo junk that must never be copied in
+.VSCodeCounter/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
