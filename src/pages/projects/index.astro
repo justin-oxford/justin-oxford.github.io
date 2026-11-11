@@ -3,15 +3,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageBanner from '../../components/PageBanner.astro';
 import ProjectFilter from '../../components/ProjectFilter.astro';
 import ProjectGrid from '../../components/ProjectGrid.astro';
-import { getPublishedProjects, getTagsInUse } from '../../lib/projects';
+import Interests from '../../components/Interests.astro';
+import { getPublishedProjects, getTagsInUse, tagUrl } from '../../lib/projects';
+import { getVisibleInterests } from '../../lib/interests';
 
 const projects = await getPublishedProjects();
 const tags = await getTagsInUse(projects);
+
+// Link an interest to its tag's project list, but only if that tag page exists.
+const interests = (await getVisibleInterests('projectInterests')).map((i) => {
+  const tag = i.tag ? tags.find((t) => t.id === i.tag) : undefined;
+  return tag
+    ? { ...i, link: { href: tagUrl(tag.id), label: `${tag.count} ${tag.label} project${tag.count === 1 ? '' : 's'}` } }
+    : i;
+});
 ---
 
 <BaseLayout title="Projects" description="Projects by Justin Oxford: code, games, mods, and experiments.">
   <div class="container">
     <PageBanner title="Projects" />
+    <Interests items={interests} />
     <ProjectFilter tags={tags} total={projects.length} />
     <ProjectGrid projects={projects} />
   </div>

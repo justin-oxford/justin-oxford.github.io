@@ -101,6 +101,7 @@ content:
             - { name: javascript, label: JavaScript }
             - { name: machine-learning, label: Machine Learning }
             - { name: modding, label: Modding }
+            - { name: music, label: Music }
             - { name: physics, label: Physics }
             - { name: python, label: Python }
             - { name: racing, label: Racing }
@@ -264,3 +265,53 @@ content:
       - name: detail
         label: Detail
         type: string
+
+  - name: interests-writing
+    label: Writing interests
+    type: file
+    path: src/data/interests-writing.yaml
+    format: yaml
+    list: true
+    fields:
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: "On: hidden from the live site. Turn off once the text is yours."
+      - name: title
+        label: Interest
+        type: string
+        required: true
+      - name: blurb
+        label: About this interest
+        type: text
+        required: true
+        description: A few sentences in your own words, shown at the top of the Writing page. Leave a blank line between paragraphs.
+
+  - name: interests-projects
+    label: Project interests
+    type: file
+    path: src/data/interests-projects.yaml
+    format: yaml
+    list: true
+    fields:
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: "On: hidden from the live site. Turn off once the text is yours."
+      - name: title
+        label: Interest
+        type: string
+        required: true
+      - name: blurb
+        label: About this interest
+        type: text
+        required: true
+        description: A few sentences in your own words, shown at the top of the Projects page. Leave a blank line between paragraphs.
+      - name: tag
+        label: Related tag
+        type: select
+        description: Optional. Adds a link to the projects with this tag (once one is published). Must be a tag from the Projects tag list.
+        options:
+          values: [algorithms, arduino, aviation, bot, cpp, csharp, game-dev, javascript, machine-learning, modding, music, physics, python, racing, reverse-engineering, simulation, unity, web]

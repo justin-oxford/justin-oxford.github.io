@@ -36,3 +36,5 @@
   label: Reverse Engineering
 - id: bot
   label: Bot
+- id: music
+  label: Music

@@ -2,14 +2,18 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageBanner from '../../components/PageBanner.astro';
 import Icon from '../../components/Icon.astro';
+import Interests from '../../components/Interests.astro';
 import { getPublishedWriting, kindLabel, pdfSize } from '../../lib/writing';
+import { getVisibleInterests } from '../../lib/interests';
 
 const entries = await getPublishedWriting();
+const interests = await getVisibleInterests('writingInterests');
 ---
 
 <BaseLayout title="Writing" description="Essays, papers, and short stories by Justin Oxford.">
   <div class="container">
     <PageBanner title="Writing" />
+    <Interests items={interests} />
 
     {
       entries.length > 0 ? (

@@ -1,0 +1,114 @@
+---
+// "Interests" panel at the top of /writing and /projects.
+// Entries come from src/data/interests-*.yaml (editable in Pages CMS). Drafts show only in
+// `npm run dev`; with nothing published, the panel doesn't render at all.
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+
+export interface Interest {
+  title: string;
+  blurb: string;
+  draft: boolean;
+  /** Optional link to related content, e.g. a project tag page. */
+  link?: { href: string; label: string };
+}
+
+interface Props {
+  items: Interest[];
+}
+
+const { items } = Astro.props;
+const paragraphs = (blurb: string) => blurb.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+---
+
+{items.length > 0 && (
+  <section class="panel interests" aria-labelledby="interests">
+    <SectionHeading id="interests">Interests</SectionHeading>
+    <ul class="grid" data-count={items.length}>
+      {items.map((item) => (
+        <li class:list={['item', { draft: item.draft }]}>
+          <h3 class="title">
+            {item.title}
+            {item.draft && <span class="draft-tag">Draft</span>}
+          </h3>
+          {paragraphs(item.blurb).map((p) => (
+            <p class:list={['blurb', { todo: p.startsWith('TODO(') }]}>{p}</p>
+          ))}
+          {item.link && (
+            <a class="more" href={item.link.href}>
+              {item.link.label}
+              <Icon name="arrow" />
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .interests { margin-bottom: var(--sp-6); }
+  .grid {
+    display: grid;
+    gap: var(--sp-5) var(--sp-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 48rem) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .grid[data-count='1'] { grid-template-columns: 1fr; }
+  }
+  @media (min-width: 72rem) {
+    .grid[data-count='3'] { grid-template-columns: repeat(3, 1fr); }
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+  .item.draft {
+    padding-left: var(--sp-4);
+    border-left: 3px dashed var(--c-terracotta);
+  }
+  .title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-3);
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--c-text);
+  }
+  .blurb {
+    margin: 0;
+    color: var(--c-secondary);
+  }
+  .blurb.todo {
+    font-size: var(--fs-sm);
+    color: var(--c-terracotta);
+  }
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-top: var(--sp-1);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  .draft-tag {
+    padding: 2px 10px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking);
+    text-transform: uppercase;
+    color: var(--c-bg);
+    background: var(--c-terracotta);
+    border-radius: var(--radius-pill);
+  }
+  @media (max-width: 30rem) {
+    .interests { padding: var(--sp-5) var(--sp-4); }
+  }
+</style>

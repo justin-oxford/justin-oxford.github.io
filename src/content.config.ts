@@ -17,20 +17,26 @@ const tagId = z.string().refine((t) => tagIds.includes(t), {
   error: (issue) => `Unknown tag "${String(issue.input)}". Add it to src/data/tags.yaml or use one of: ${tagIds.join(', ')}`,
 });
 
-// The CMS tag picker (.pages.yml) has its own copy of the tag list; fail loudly if they drift.
+// The CMS tag pickers (.pages.yml) have their own copies of the tag list; fail loudly if they drift.
 if (existsSync('.pages.yml')) {
   const cms = parseYaml(readFileSync('.pages.yml', 'utf8'));
-  const projectsEntry = cms?.content?.find((c: { name: string }) => c.name === 'projects');
-  const cmsTags: string[] = (projectsEntry?.fields?.find((f: { name: string }) => f.name === 'tags')?.options?.values ?? [])
-    .map((v: { name: string } | string) => (typeof v === 'string' ? v : v.name));
-  const missing = tagIds.filter((t) => !cmsTags.includes(t));
-  const extra = cmsTags.filter((t) => !tagIds.includes(t));
-  if (missing.length || extra.length) {
-    throw new Error(
-      `Tag lists are out of sync. src/data/tags.yaml and the "tags" field in .pages.yml must match.` +
-        (missing.length ? ` Missing from .pages.yml: ${missing.join(', ')}.` : '') +
-        (extra.length ? ` Not in tags.yaml: ${extra.join(', ')}.` : ''),
-    );
+  const pickers: [string, string][] = [
+    ['projects', 'tags'],
+    ['interests-projects', 'tag'],
+  ];
+  for (const [entryName, fieldName] of pickers) {
+    const entry = cms?.content?.find((c: { name: string }) => c.name === entryName);
+    const cmsTags: string[] = (entry?.fields?.find((f: { name: string }) => f.name === fieldName)?.options?.values ?? [])
+      .map((v: { name: string } | string) => (typeof v === 'string' ? v : v.name));
+    const missing = tagIds.filter((t) => !cmsTags.includes(t));
+    const extra = cmsTags.filter((t) => !tagIds.includes(t));
+    if (missing.length || extra.length) {
+      throw new Error(
+        `Tag lists are out of sync. src/data/tags.yaml and the "${fieldName}" field of "${entryName}" in .pages.yml must match.` +
+          (missing.length ? ` Missing from .pages.yml: ${missing.join(', ')}.` : '') +
+          (extra.length ? ` Not in tags.yaml: ${extra.join(', ')}.` : ''),
+      );
+    }
   }
 }
 
@@ -169,4 +175,22 @@ const certificates = defineCollection({
     .strict(),
 });
 
-export const collections = { tags, projects, writing, timeline, certificates };
+// Interests shown at the top of /writing and /projects, in file order.
+const interest = {
+  id: z.string(),
+  title: z.string().min(1),
+  blurb: z.string().min(1),
+  draft: z.boolean().default(false),
+};
+
+const writingInterests = defineCollection({
+  loader: file('src/data/interests-writing.yaml', { parser: indexedYaml }),
+  schema: z.object(interest).strict(),
+});
+
+const projectInterests = defineCollection({
+  loader: file('src/data/interests-projects.yaml', { parser: indexedYaml }),
+  schema: z.object({ ...interest, tag: blankable(tagId) }).strict(),
+});
+
+export const collections = { tags, projects, writing, timeline, certificates, writingInterests, projectInterests };
