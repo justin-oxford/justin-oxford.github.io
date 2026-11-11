@@ -1,0 +1,253 @@
+# Pages CMS configuration (https://pagescms.org/docs/configuration/).
+# Edit content at https://app.pagescms.org. Saving commits to main, which deploys the site.
+# The build still validates everything (src/content.config.ts): a bad value fails the
+# deploy and the live site stays as it was.
+
+media:
+  - name: project-images
+    label: Project images
+    # Stored next to the project files; written into frontmatter as ./images/<file>
+    # so Astro's image pipeline can optimize them.
+    input: src/content/projects/images
+    output: ./images
+    categories: [image]
+    rename: safe
+  - name: docs
+    label: Writing PDFs
+    # Not public/: only PDFs of published writing entries are copied into the site.
+    input: src/docs
+    output: /docs
+    extensions: [pdf]
+
+settings:
+  content:
+    merge: true # keep any frontmatter keys the CMS doesn't know about
+
+content:
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    subfolders: false
+    filename:
+      template: "{primary}.md"
+      field: create
+    view:
+      fields: [title, status, started, draft, featured]
+      primary: title
+      sort: [started, title]
+      search: [title, summary]
+      default:
+        sort: started
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: summary
+        label: Summary
+        type: text
+        required: true
+        description: One or two sentences, shown on cards and as the page description.
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: "On: hidden from the live site (visible in npm run dev). Turn off to publish."
+      - name: featured
+        label: Featured on Home
+        type: boolean
+        default: false
+        description: Home shows up to three featured projects, newest first.
+      - name: status
+        label: Status
+        type: select
+        required: true
+        options:
+          values:
+            - { name: active, label: Active }
+            - { name: archived, label: Archived }
+            - { name: shelved, label: Shelved }
+      - name: started
+        label: Started
+        type: string
+        required: true
+        description: Year and month, e.g. 2019-06
+        pattern:
+          regex: "^\\d{4}-(0[1-9]|1[0-2])$"
+          message: Use YYYY-MM, e.g. 2019-06
+      - name: ended
+        label: Ended
+        type: string
+        description: Optional. Year and month, e.g. 2019-08. Leave blank if ongoing.
+        pattern:
+          regex: "^(\\d{4}-(0[1-9]|1[0-2]))?$"
+          message: Use YYYY-MM, e.g. 2019-08, or leave blank
+      - name: tags
+        label: Tags
+        type: select
+        description: To add a new tag, add it to src/data/tags.yaml and to this list in .pages.yml (the build checks they match).
+        options:
+          multiple: true
+          values:
+            - { name: algorithms, label: Algorithms }
+            - { name: arduino, label: Arduino }
+            - { name: aviation, label: Aviation }
+            - { name: bot, label: Bot }
+            - { name: cpp, label: "C++" }
+            - { name: csharp, label: "C#" }
+            - { name: game-dev, label: Game Dev }
+            - { name: javascript, label: JavaScript }
+            - { name: machine-learning, label: Machine Learning }
+            - { name: modding, label: Modding }
+            - { name: physics, label: Physics }
+            - { name: python, label: Python }
+            - { name: racing, label: Racing }
+            - { name: reverse-engineering, label: Reverse Engineering }
+            - { name: simulation, label: Simulation }
+            - { name: unity, label: Unity }
+            - { name: web, label: Web }
+      - name: links
+        label: Links
+        type: object
+        fields:
+          - name: repo
+            label: Source code (GitHub URL)
+            type: string
+          - name: live
+            label: Live / play (full URL, or a site path like /play/javascript-racing/)
+            type: string
+          - name: download
+            label: Download (URL)
+            type: string
+      - name: cover
+        label: Cover image
+        type: image
+        options:
+          media: project-images
+      - name: coverAlt
+        label: Cover image description (alt text)
+        type: string
+        description: Required when there's a cover image. Describe what the image shows.
+      - name: body
+        label: Write-up
+        type: rich-text
+        options:
+          format: markdown
+          media: project-images
+
+  - name: writing
+    label: Writing
+    type: collection
+    path: src/content/writing
+    subfolders: false
+    filename:
+      template: "{primary}.md"
+      field: create
+    view:
+      fields: [title, year, kind, draft]
+      primary: title
+      sort: [year, title]
+      search: [title, summary]
+      default:
+        sort: year
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: year
+        label: Year
+        type: number
+        required: true
+        options:
+          min: 1900
+          max: 2100
+      - name: kind
+        label: Kind
+        type: select
+        required: true
+        options:
+          values:
+            - { name: essay, label: Essay }
+            - { name: paper, label: Paper }
+            - { name: article, label: Article }
+            - { name: story, label: Short story }
+      - name: summary
+        label: Summary
+        type: text
+        required: true
+      - name: pdf
+        label: PDF
+        type: file
+        options:
+          media: docs
+          extensions: [pdf]
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: "On: hidden from the live site, and its PDF isn't published. Turn off to publish."
+
+  - name: home
+    label: Home page
+    type: file
+    path: src/data/site.yaml
+    format: yaml
+    fields:
+      - name: bio
+        label: Bio
+        type: text
+        description: 2–4 sentences. Avoid "currently"; it goes stale.
+
+  - name: timeline
+    label: Career timeline (About)
+    type: file
+    path: src/data/timeline.yaml
+    format: yaml
+    list: true
+    fields:
+      - name: start
+        label: Start
+        type: string
+        required: true
+        description: Year (2019) or year-month (2019-06)
+        pattern:
+          regex: "^\\d{4}(-(0[1-9]|1[0-2]))?$"
+          message: Use 2019 or 2019-06
+      - name: end
+        label: End
+        type: string
+        description: Optional. Blank if ongoing.
+        pattern:
+          regex: "^(\\d{4}(-(0[1-9]|1[0-2]))?)?$"
+          message: Use 2019 or 2019-06, or leave blank
+      - name: org
+        label: Organization
+        type: string
+        required: true
+      - name: role
+        label: Role
+        type: string
+        required: true
+      - name: summary
+        label: Summary
+        type: text
+        required: true
+
+  - name: certificates
+    label: Certificates & ratings (About)
+    type: file
+    path: src/data/certificates.yaml
+    format: yaml
+    list: true
+    fields:
+      - name: name
+        label: Name
+        type: string
+        required: true
+      - name: detail
+        label: Detail
+        type: string

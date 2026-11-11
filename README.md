@@ -18,7 +18,20 @@ npm run build     # production build into dist/, validates all content
 npm run preview   # serve the built dist/ locally
 ```
 
-## Add a project
+## Edit content in the browser (Pages CMS)
+
+Go to [app.pagescms.org](https://app.pagescms.org), sign in with GitHub, and open this repo. You get forms for
+Projects, Writing, the Home bio, and the About timeline/certificates. Saving commits to `main` and the site
+redeploys in about a minute. The forms are defined in `.pages.yml`.
+
+- New entries start as **Draft** (hidden from the live site). Turn Draft off to publish.
+- Project images upload to `src/content/projects/images/`; writing PDFs to `src/docs/`.
+- To add a new tag, add it to `src/data/tags.yaml` **and** to the `tags` field in `.pages.yml`. The build fails if
+  the two lists differ.
+- The build still validates every save. If something's invalid, the deploy fails (check the Actions tab) and the
+  live site stays as it was.
+
+## Add a project (by hand)
 
 1. Copy an existing file in `src/content/projects/` and rename it (the filename becomes the URL slug).
 2. Edit the frontmatter and write-up. Add any new tag to `src/data/tags.yaml`.
