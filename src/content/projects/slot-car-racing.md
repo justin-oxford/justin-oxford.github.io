@@ -1,13 +1,18 @@
 ---
 title: Slot Car Racing
-summary: A 1:32-scale slot car racing game in Unity with a custom guide-pin physics model, procedurally generated tracks, and race series.
-status: active          # TODO(Justin): last board activity 2026-08; active or shelved?
+summary: A 1:32-scale slot car racing game in Unity with a custom guide-pin
+  physics model, procedurally generated tracks, and race series. Currently in
+  early alpha builds, hoping to release in 2027.
+status: active
 started: 2026-07
-tags: [unity, game-dev, racing, physics]
-draft: true
+tags:
+  - unity
+  - game-dev
+  - racing
+  - physics
+draft: false
+featured: true
 ---
-TODO(Justin): the game's title, if it isn't "Slot Car Racing".
-
 A slot car racing game at 1:32 scale, built in Unity.
 
 ## Physics
@@ -21,5 +26,3 @@ Tracks are generated procedurally and saved in a custom `.track` format, with el
 ## Progress
 
 Time Trial and Race modes, Club / Sport / Pro series, controller support, save/load, and a full audio stack are in. Networking replicates each car's state with the car's owner authoritative.
-
-TODO(Justin): screenshots or a short clip.
