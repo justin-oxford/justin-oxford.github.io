@@ -1,13 +1,17 @@
 ---
-title: Airline CEO
-summary: An airline management game in Unity, early in design, with a simulation core that runs without any UI.
-status: active          # TODO(Justin): early design; active or shelved?
+title: Airline CEO (working title)
+summary: An airline management game in Unity (because I don't get enough airline
+  ops at work apparently). Early in design with hopes of a deep simulation.
+status: active
 started: 2026-10
-tags: [unity, game-dev, simulation, aviation]
-draft: true
+tags:
+  - unity
+  - game-dev
+  - simulation
+  - aviation
+draft: false
+featured: false
 ---
-TODO(Justin): is "Airline CEO" the final title? It's very close to the commercial game Airport CEO.
-
 An airline management game in Unity, in early design. Play is planned to start in 1950.
 
 ## Design
