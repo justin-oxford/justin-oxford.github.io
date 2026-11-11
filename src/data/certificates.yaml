@@ -1,15 +1,10 @@
-# Certificates & ratings, in display order. Editable in Pages CMS.
-# Each entry: { name, detail?, draft }. draft: true = hidden on the live site.
-# From the About card's draft list; TODO(Justin): the full list as it should appear.
 - name: CL-65 type rating
   detail: CRJ-200/550/700/900
-  draft: true
 - name: CFI
   detail: Certificated Flight Instructor
-  draft: true
 - name: CFII
   detail: Instrument instructor
-  draft: true
 - name: MEI
   detail: Multi-engine instructor
-  draft: true
+- name: ATP MEL
+- name: Commercial SEL
