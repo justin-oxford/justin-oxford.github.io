@@ -10,7 +10,7 @@ tags:
   - simulation
   - aviation
 draft: false
-featured: false
+featured: true
 ---
 An airline management game in Unity, in early design. Play is planned to start in 1950.
 
