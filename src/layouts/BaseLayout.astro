@@ -1,0 +1,62 @@
+---
+import { Font } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../site';
+import '../styles/global.css';
+
+interface Props {
+  /** Page title; the site name is appended (omit on Home). */
+  title?: string;
+  description: string;
+  /** Keep this page out of search engines (e.g. /styleguide). */
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : site.name;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#14110e" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <Font cssVariable="--font-display-a" preload />
+    <Font cssVariable="--font-body-a" preload />
+    <Font cssVariable="--font-mono" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: var(--sp-4);
+    top: -100px;
+    z-index: 10;
+    padding: var(--sp-2) var(--sp-4);
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+    font-weight: 600;
+    border-radius: var(--radius);
+  }
+  .skip-link:focus { top: var(--sp-4); }
+</style>

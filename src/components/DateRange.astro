@@ -1,0 +1,35 @@
+---
+interface Props {
+  /** YYYY-MM or YYYY */
+  start: string | number;
+  /** YYYY-MM or YYYY; omit for open-ended. */
+  end?: string | number;
+}
+const { start, end } = Astro.props;
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmt = (v: string | number) => {
+  const [y, m] = String(v).split('-');
+  return m ? `${MONTHS[Number(m) - 1]} ${y}` : y;
+};
+const iso = (v: string | number) => String(v);
+---
+
+<span class="date-range mono">
+  <time datetime={iso(start)}>{fmt(start)}</time>
+  {end !== undefined && end !== start && (
+    <>
+      <span aria-hidden="true"> – </span>
+      <span class="visually-hidden"> to </span>
+      <time datetime={iso(end)}>{fmt(end)}</time>
+    </>
+  )}
+</span>
+
+<style>
+  .date-range {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    white-space: nowrap;
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+// Temporary body for nav pages that later cards will build out.
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<div class="container container--narrow page">
+  <p class="eyebrow">Under construction</p>
+  <h1>{title}</h1>
+  <p class="muted">This section is still being built.</p>
+</div>
+
+<style>
+  .page { padding-block: var(--sp-8); }
+</style>

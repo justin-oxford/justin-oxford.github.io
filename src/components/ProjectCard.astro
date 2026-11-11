@@ -1,0 +1,84 @@
+---
+import StatusBadge from './StatusBadge.astro';
+import TagChip from './TagChip.astro';
+import DateRange from './DateRange.astro';
+
+interface Props {
+  title: string;
+  summary: string;
+  href: string;
+  status: 'active' | 'archived' | 'shelved';
+  started: string;
+  ended?: string;
+  tags?: string[];
+  /** Heading level for the title; h3 inside a section. */
+  headingLevel?: 'h2' | 'h3';
+}
+const { title, summary, href, status, started, ended, tags = [], headingLevel: H = 'h3' } = Astro.props;
+---
+
+<article class="card">
+  <div class="meta">
+    <DateRange start={started} end={ended} />
+    <StatusBadge status={status} />
+  </div>
+  <H class="title"><a href={href}>{title}</a></H>
+  <p class="summary">{summary}</p>
+  {tags.length > 0 && (
+    <ul class="tags" aria-label="Tags">
+      {tags.map((t) => <li><TagChip id={t} /></li>)}
+    </ul>
+  )}
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    padding: var(--sp-5);
+    background: var(--c-surface);
+    border: var(--rule);
+    border-radius: var(--radius);
+  }
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--c-rule-strong);
+    background: var(--c-surface-2);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--sp-2);
+  }
+  .title {
+    margin: 0;
+    font-size: var(--fs-xl);
+  }
+  .title a {
+    color: var(--c-text);
+    text-decoration: none;
+  }
+  /* whole card is clickable via the title link */
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .title a:focus-visible { outline: none; }
+  .card:has(.title a:focus-visible) { outline: 2px solid var(--c-focus); outline-offset: 3px; }
+  .summary {
+    margin: 0;
+    color: var(--c-text-muted);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin: auto 0 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

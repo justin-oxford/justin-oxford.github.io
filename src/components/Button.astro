@@ -1,0 +1,54 @@
+---
+interface Props {
+  /** Renders a link when set, otherwise a <button>. */
+  href?: string;
+  variant?: 'primary' | 'ghost';
+  type?: 'button' | 'submit';
+}
+const { href, variant = 'primary', type = 'button' } = Astro.props;
+---
+
+{
+  href ? (
+    <a class:list={['btn', variant]} href={href}><slot /></a>
+  ) : (
+    <button class:list={['btn', variant]} type={type}><slot /></button>
+  )
+}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: 2.75rem; /* comfortable touch target */
+    padding: var(--sp-2) var(--sp-5);
+    font: inherit;
+    font-family: var(--ff-mono);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .primary {
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+  }
+  .primary:hover {
+    background: var(--c-accent-strong);
+    color: var(--c-on-accent);
+  }
+  .ghost {
+    background: transparent;
+    color: var(--c-text);
+    border-color: var(--c-rule-strong);
+  }
+  .ghost:hover {
+    color: var(--c-text);
+    border-color: var(--c-accent);
+    background: var(--c-surface-2);
+  }
+</style>

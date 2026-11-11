@@ -1,0 +1,35 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props {
+  /** Tag id from src/data/tags.yaml */
+  id: string;
+  /** Link target; plain text chip when omitted. */
+  href?: string;
+}
+const { id, href } = Astro.props;
+const tag = await getEntry('tags', id);
+const label = tag?.data.label ?? id;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class="chip" href={href}>{label}</Tag>
+
+<style>
+  .chip {
+    display: inline-block;
+    padding: 0.1em 0.6em;
+    font-family: var(--ff-mono);
+    font-size: var(--fs-xs);
+    line-height: 1.6;
+    color: var(--c-text-muted);
+    border: 1px solid var(--c-rule-strong);
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  a.chip:hover {
+    color: var(--c-text);
+    border-color: var(--c-accent);
+  }
+</style>

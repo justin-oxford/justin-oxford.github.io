@@ -1,16 +1,14 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../site';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="description" content="Justin Oxford" />
-		<title>Justin Oxford</title>
-	</head>
-	<body>
-		<h1>Justin Oxford</h1>
-	</body>
-</html>
+<BaseLayout description="Justin Oxford: projects, writing, and aviation.">
+  <div class="container container--narrow hero">
+    <h1>{site.name}</h1>
+  </div>
+</BaseLayout>
+
+<style>
+  .hero { padding-block: var(--sp-8); }
+</style>

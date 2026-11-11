@@ -1,0 +1,71 @@
+---
+import { site } from '../site';
+
+const year = new Date().getFullYear(); // computed at build
+const emailIsSet = site.email.includes('@');
+---
+
+<footer class="site-footer">
+  <div class="container inner">
+    {site.signOff && <p class="sign-off">{site.signOff}</p>}
+    <ul class="links">
+      <li>
+        {emailIsSet ? <a href={`mailto:${site.email}`}>{site.email}</a> : <span class="todo">{site.email}</span>}
+      </li>
+      <li><a href={site.github} rel="me">GitHub</a></li>
+    </ul>
+    <p class="copy mono">&copy; {year} {site.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--sp-8);
+    border-top: var(--rule);
+    /* tick marks along the top edge, like a dial bezel */
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--c-rule) 0 1px,
+      transparent 1px 12px
+    );
+    background-size: 100% 6px;
+    background-repeat: no-repeat;
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sp-3) var(--sp-6);
+    padding-block: var(--sp-6);
+    font-size: var(--fs-sm);
+  }
+  p { margin: 0; }
+  .sign-off {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    color: var(--c-text);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .copy {
+    margin-left: auto;
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+  .todo {
+    font-family: var(--ff-mono);
+    font-size: var(--fs-xs);
+    color: var(--c-accent);
+    border: 1px dashed var(--c-accent);
+    padding: 0 var(--sp-2);
+  }
+  @media (max-width: 30rem) {
+    .copy { margin-left: 0; width: 100%; }
+  }
+</style>
