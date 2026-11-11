@@ -27,6 +27,7 @@ const hasLinks = Boolean(repo || live || download);
   <article class="container container--narrow project">
     <!-- Old project page: small gray date, centered title with sage underline, gray subtitle -->
     <header class="head">
+      {data.draft && <p class="draft-note">Draft: only visible in <code>npm run dev</code>, not on the live site.</p>}
       <p class="date"><DateRange start={data.started} end={data.ended} /></p>
       <h1>{data.title}</h1>
       <p class="summary">{data.summary}</p>
@@ -65,6 +66,15 @@ const hasLinks = Boolean(repo || live || download);
   .project { padding-block: var(--sp-6) 0; }
   .head { text-align: center; margin-bottom: var(--sp-6); }
   .date { margin: 0 0 var(--sp-3); }
+  .draft-note {
+    display: inline-block;
+    margin: 0 0 var(--sp-4);
+    padding: var(--sp-2) var(--sp-4);
+    font-size: var(--fs-sm);
+    color: var(--c-terracotta);
+    border: 1px dashed var(--c-terracotta);
+    border-radius: var(--radius-sm);
+  }
   h1 {
     display: inline-block;
     margin: 0 auto var(--sp-4);

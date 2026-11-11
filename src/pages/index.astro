@@ -1,6 +1,6 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedProjects } from '../lib/projects';
 import Button from '../components/Button.astro';
 import Icon from '../components/Icon.astro';
 import ProjectCard from '../components/ProjectCard.astro';
@@ -8,9 +8,7 @@ import SectionHeading from '../components/SectionHeading.astro';
 import { site } from '../site';
 
 // Featured projects come from frontmatter (`featured: true`), newest first, max 3.
-const featured = (await getCollection('projects', ({ data }) => data.featured && !data.draft))
-  .sort((a, b) => b.data.started.localeCompare(a.data.started))
-  .slice(0, 3);
+const featured = (await getPublishedProjects()).filter((p) => p.data.featured).slice(0, 3);
 
 const bioIsTodo = site.bio.startsWith('TODO(');
 ---
@@ -44,6 +42,7 @@ const bioIsTodo = site.bio.startsWith('TODO(');
               started={data.started}
               ended={data.ended}
               tags={data.tags}
+              draft={data.draft}
             />
           ))}
         </div>

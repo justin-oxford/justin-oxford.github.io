@@ -15,14 +15,19 @@ interface Props {
   headingLevel?: 'h2' | 'h3';
   /** Link each tag to its /projects/tag/<id>/ page. */
   linkTags?: boolean;
+  /** Dev-only: marks an unpublished draft. */
+  draft?: boolean;
 }
-const { title, summary, href, status, started, ended, tags = [], headingLevel: H = 'h3', linkTags = true } = Astro.props;
+const { title, summary, href, status, started, ended, tags = [], headingLevel: H = 'h3', linkTags = true, draft = false } = Astro.props;
 ---
 
-<article class="card">
+<article class:list={['card', { draft }]}>
   <div class="meta">
     <DateRange start={started} end={ended} />
-    <StatusBadge status={status} />
+    <span class="badges">
+      {draft && <span class="draft-tag">Draft</span>}
+      <StatusBadge status={status} />
+    </span>
   </div>
   <H class="title"><a href={href}>{title}</a></H>
   <p class="summary">{summary}</p>
@@ -52,6 +57,18 @@ const { title, summary, href, status, started, ended, tags = [], headingLevel: H
     border-color: var(--c-secondary);
   }
   .card:hover .title a { text-decoration: underline; }
+  .card.draft { border: 1.5px dashed var(--c-terracotta); }
+  .badges { display: inline-flex; align-items: center; gap: var(--sp-2); }
+  .draft-tag {
+    padding: 2px 10px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking);
+    text-transform: uppercase;
+    color: var(--c-bg);
+    background: var(--c-terracotta);
+    border-radius: var(--radius-pill);
+  }
   .meta {
     display: flex;
     flex-wrap: wrap;

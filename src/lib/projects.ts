@@ -2,9 +2,15 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 export type Project = CollectionEntry<'projects'>;
 
-/** All non-draft projects, newest first (by `started`, then title). */
+/**
+ * Drafts are visible in `npm run dev` (marked "Draft") so they can be reviewed,
+ * and never included in a production build.
+ */
+export const showDrafts = import.meta.env.DEV;
+
+/** All published projects (plus drafts in dev), newest first (by `started`, then title). */
 export async function getPublishedProjects(): Promise<Project[]> {
-  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  const projects = await getCollection('projects', ({ data }) => showDrafts || !data.draft);
   return projects.sort(
     (a, b) => b.data.started.localeCompare(a.data.started) || a.data.title.localeCompare(b.data.title),
   );

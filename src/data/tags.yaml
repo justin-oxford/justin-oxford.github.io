@@ -1,21 +1,38 @@
 # Controlled tag vocabulary for projects.
 # Every tag used in src/content/projects/*.md must have an entry here,
 # or the build fails. `id` is what goes in frontmatter; `label` is what's displayed.
+# The filter on /projects lists tags alphabetically by id.
 - id: javascript
   label: JavaScript
 - id: python
   label: Python
+- id: cpp
+  label: C++
+- id: csharp
+  label: C#
+- id: unity
+  label: Unity
+- id: arduino
+  label: Arduino
+- id: web
+  label: Web
 - id: game-dev
   label: Game Dev
 - id: modding
   label: Modding
-- id: machine-learning
-  label: Machine Learning
-- id: physics
-  label: Physics
+- id: simulation
+  label: Simulation
+- id: racing
+  label: Racing
 - id: aviation
   label: Aviation
-- id: web
-  label: Web
+- id: physics
+  label: Physics
+- id: algorithms
+  label: Algorithms
+- id: machine-learning
+  label: Machine Learning
+- id: reverse-engineering
+  label: Reverse Engineering
 - id: bot
   label: Bot

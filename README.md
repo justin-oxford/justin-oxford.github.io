@@ -48,6 +48,9 @@ Write-up in Markdown.
 If anything is wrong (unknown tag, bad date, typo'd field name, missing `coverAlt`), `npm run build`
 fails and names the file and field.
 
+**Drafts:** entries with `draft: true` never appear on the live site, but `npm run dev` shows them
+(marked "Draft") so you can review them. Delete the `draft: true` line to publish.
+
 ## Content layout
 
 | Path | What |
