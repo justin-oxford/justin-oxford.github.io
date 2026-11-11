@@ -1,42 +1,45 @@
-# Career timeline, oldest first (the About page shows it newest first).
-# Each entry: { start, end?, org, role, summary, draft }. start/end are a year (2019) or YYYY-MM.
-# draft: true = hidden on the live site (shown in npm run dev). Editable in Pages CMS.
-# Sources: old site About/Home (2021), resumes 2021–2022, logbook export (training start),
-# and the About card's draft list. Unknowns are TODO(Justin).
-- start: 2018
-  org: Boston College
+- start: "2016"
+  end: "2018"
+  org: A University in New England
   role: B.A., Philosophy & Mathematics
   summary: Graduated in December 2018, with a focus on engineering, logic, and mind.
-  draft: true
-- start: 2019
-  end: 2021
-  org: Mainfreight USA
+- start: "2019"
+  end: "2021"
+  org: Medium US Logistics Firm
   role: Customs & import operations, then business analysis
-  summary: US Customs entry writing and import key accounts, then building Python, SQL, and Power BI tools for supply-chain reporting, cost indexing, and freight tracking.
-  draft: true
-- org: Kuehne+Nagel
-  role: "TODO(Justin): role"
-  summary: "TODO(Justin): customs/import operations; years and what you did."
-  draft: true
-- start: 2021
-  org: Central Piedmont Community College
-  role: Programmer, web development
-  summary: Built and maintained web-based institutional applications with Python (Django) and JavaScript on a remote team.
-  draft: true
-- start: 2022
-  org: Aerowood Aviation
-  role: Private Pilot
+  summary: US Customs entry writing and import key accounts, then building Python,
+    and SQL tools for supply-chain reporting, cost indexing, and freight
+    tracking.
+- start: "2021"
+  end: "2021"
+  org: Major US Logistics Firm
+  role: US Customs Entry Writer
+  summary: "Specialized in US Customs Clearances. "
+- start: "2022"
+  end: "2022"
+  org: Local Community College
+  role: Programmer & Analyst
+  summary: Built and maintained web-based institutional applications with Python
+    (Django) and JavaScript on a remote team.
+- start: "2022"
+  end: "2022"
+  org: "Local Mom & Pop Flight School "
+  role: Student Pilot and Private Pilot
   summary: Started flight training.
-  draft: true
-- org: ATP Flight School
-  role: Instrument, Commercial, CFI, CFII, MEI; then instructor
-  summary: Earned instrument, commercial, and instructor certificates, then instructed as a CFI, Lead CFI, and Lead MEI.
-  draft: true
-- org: ATP Jets
-  role: ATP-CTP
-  summary: Airline Transport Pilot Certification Training Program.
-  draft: true
-- org: Regional airline
+- start: "2022"
+  end: "2023"
+  org: Major US Flight School
+  role: Student Pilot; Instrument, Commercial, CFI, CFII, MEI
+  summary: Earned instrument, commercial, instructor certificates, and
+    multi-engine ratings
+- start: "2023"
+  end: "2024"
+  org: Major US Flight School
+  role: Flight Standards Instructor
+  summary: Conducted Mock Checkrides (flight and oral), Stage Check, Standards
+    Flights, Intro-Flights. Managed a team of 10-20 instructors. Played a major
+    role in student success in coordination with the Training Support team.
+- start: 2024-10
+  org: US Based Regional Airline
   role: CRJ First Officer
   summary: Flying the CRJ-200, -550, -700, and -900 with a CL-65 type rating.
-  draft: true
