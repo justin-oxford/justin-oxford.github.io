@@ -1,13 +1,22 @@
 ---
 title: Dee Dee
-summary: A machine-learning experiment that read penny-stock posts on Reddit and trained a recurrent neural network to spot pump-and-dump hype.
+summary: Who doesn't want to get rich? That was the idea behind Dee-Dee, a
+  machine-learning experiment that read penny-stock posts on Reddit and trained
+  a recurrent neural network to spot pump-and-dump hype. While I became very
+  wealthy in knowledge of neural networks, my wallet shrunk thanks to the cost
+  of training and hosting the bot.
 status: archived
 started: 2020-06
 ended: 2020-12
-tags: [python, machine-learning, bot, web]
-draft: true
+tags:
+  - python
+  - machine-learning
+  - bot
+  - web
+draft: false
 links:
   repo: https://github.com/justin-oxford/dee-dee
+featured: false
 ---
 Dee Dee (short for "due diligence") was how I taught myself machine learning in 2020. The question: can you see a penny stock being "pumped" in online communities before the price moves?
 
@@ -22,5 +31,3 @@ The plan ended with a genetic-algorithm trading strategy run against a paper-tra
 ## What was hard
 
 Keeping the APIs well-behaved, making the pipeline fast enough, and cleaning up Reddit post text. Polling was eventually limited to once an hour to keep the server stable.
-
-TODO(Justin): did the genetic algorithm or paper trading ever run, and what did you learn from the results?
