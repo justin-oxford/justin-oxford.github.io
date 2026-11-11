@@ -1,3 +1,4 @@
+- name: ATP MEL
 - name: CL-65 type rating
   detail: CRJ-200/550/700/900
 - name: CFI
@@ -6,5 +7,4 @@
   detail: Instrument instructor
 - name: MEI
   detail: Multi-engine instructor
-- name: ATP MEL
 - name: Commercial SEL
