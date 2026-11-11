@@ -13,8 +13,10 @@ interface Props {
   tags?: string[];
   /** Heading level for the title; h3 inside a section. */
   headingLevel?: 'h2' | 'h3';
+  /** Link each tag to its /projects/tag/<id>/ page. */
+  linkTags?: boolean;
 }
-const { title, summary, href, status, started, ended, tags = [], headingLevel: H = 'h3' } = Astro.props;
+const { title, summary, href, status, started, ended, tags = [], headingLevel: H = 'h3', linkTags = true } = Astro.props;
 ---
 
 <article class="card">
@@ -26,7 +28,7 @@ const { title, summary, href, status, started, ended, tags = [], headingLevel: H
   <p class="summary">{summary}</p>
   {tags.length > 0 && (
     <ul class="tags" aria-label="Tags">
-      {tags.map((t) => <li><TagChip id={t} /></li>)}
+      {tags.map((t) => <li><TagChip id={t} href={linkTags ? `/projects/tag/${t}/` : undefined} /></li>)}
     </ul>
   )}
 </article>
@@ -86,5 +88,8 @@ const { title, summary, href, status, started, ended, tags = [], headingLevel: H
     margin: auto 0 0;
     padding: 0;
     list-style: none;
+    /* sit above the card-wide title link so tag links stay clickable */
+    position: relative;
+    z-index: 1;
   }
 </style>

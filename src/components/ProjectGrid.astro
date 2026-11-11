@@ -1,0 +1,48 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { projectUrl, type Project } from '../lib/projects';
+
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+---
+
+{
+  projects.length > 0 ? (
+    <ul class="grid">
+      {projects.map((p) => (
+        <li>
+          <ProjectCard
+            title={p.data.title}
+            summary={p.data.summary}
+            href={projectUrl(p)}
+            status={p.data.status}
+            started={p.data.started}
+            ended={p.data.ended}
+            tags={p.data.tags}
+            headingLevel="h2"
+          />
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="empty muted">No projects here yet.</p>
+  )
+}
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: var(--sp-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .grid li { display: grid; }
+  .empty {
+    padding: var(--sp-7) 0;
+    text-align: center;
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+// Tag filter. Plain links to static tag pages, so it works without JavaScript.
+// Styled after the old portfolio "search" box: outlined, title set into the border.
+import TagChip from './TagChip.astro';
+import { tagUrl } from '../lib/projects';
+
+interface Props {
+  tags: { id: string; label: string; count: number }[];
+  total: number;
+  /** Currently selected tag id; omit on the "all" index. */
+  current?: string;
+}
+const { tags, total, current } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <nav class="filter" aria-labelledby="filter-title">
+      <p class="legend" id="filter-title">Filter by tag</p>
+      <ul>
+        <li>
+          <a class:list={['all', { current: !current }]} href="/projects/" aria-current={!current ? 'page' : undefined}>
+            All <span class="count">{total}</span>
+          </a>
+        </li>
+        {tags.map((t) => (
+          <li>
+            <TagChip id={t.id} href={tagUrl(t.id)} count={t.count} current={t.id === current} />
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .filter {
+    position: relative;
+    margin: var(--sp-6) 0 var(--sp-6);
+    padding: var(--sp-5) var(--sp-5) var(--sp-4);
+    border: 1.5px solid var(--c-secondary);
+    border-radius: var(--radius-lg);
+  }
+  .legend {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% -50%;
+    margin: 0;
+    padding: 0 var(--sp-4);
+    background: var(--c-bg);
+    font-weight: 700;
+    color: var(--c-secondary);
+    white-space: nowrap;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 4px 14px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--c-text-muted);
+    background: var(--c-chip);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+  }
+  .all:hover { color: var(--c-text); border-color: var(--c-secondary); }
+  .all.current { color: var(--c-bg); background: var(--c-secondary); }
+  .count { opacity: 0.8; }
+</style>

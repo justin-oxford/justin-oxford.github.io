@@ -1,0 +1,43 @@
+---
+// Old portfolio header: rounded banner with a lavender → terracotta gradient,
+// white small-caps title.
+interface Props {
+  title: string;
+  /** Optional line under the title. */
+  subtitle?: string;
+}
+const { title, subtitle } = Astro.props;
+---
+
+<header class="banner">
+  <h1>{title}</h1>
+  {subtitle && <p>{subtitle}</p>}
+  <slot />
+</header>
+
+<style>
+  .banner {
+    margin-block: var(--sp-5) var(--sp-6);
+    padding: var(--sp-6) var(--sp-5);
+    text-align: center;
+    background: linear-gradient(330deg, var(--c-primary) 0%, var(--c-terracotta) 100%);
+    border-radius: 36px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 2rem; /* 32px/800: large text, so white keeps 3:1 on the gradient */
+    font-weight: 800;
+    font-variant: small-caps;
+    letter-spacing: var(--tracking);
+    color: var(--c-text);
+  }
+  p {
+    margin: var(--sp-2) 0 0;
+    font-size: 1.1875rem;
+    font-weight: 700;
+    color: var(--c-text);
+  }
+  @media (max-width: 30rem) {
+    .banner { border-radius: var(--radius); }
+  }
+</style>

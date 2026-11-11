@@ -133,8 +133,8 @@ const sample = {
 
       <h3 class="sub">Project card</h3>
       <div class="cards">
-        <ProjectCard {...sample} />
-        <ProjectCard
+        <ProjectCard {...sample} linkTags={false} />
+        <ProjectCard linkTags={false}
           title="Sample active project"
           summary="Placeholder entry showing the active status and an open-ended date range."
           href="#components"
@@ -142,7 +142,7 @@ const sample = {
           started="2026-03"
           tags={['python', 'bot']}
         />
-        <ProjectCard
+        <ProjectCard linkTags={false}
           title="Sample shelved project"
           summary="Placeholder entry showing the shelved status."
           href="#components"

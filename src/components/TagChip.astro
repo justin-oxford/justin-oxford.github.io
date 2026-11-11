@@ -6,19 +6,27 @@ interface Props {
   id: string;
   /** Link target; plain text chip when omitted. */
   href?: string;
+  /** Marks the chip as the current filter. */
+  current?: boolean;
+  /** Optional count shown after the label. */
+  count?: number;
 }
-const { id, href } = Astro.props;
+const { id, href, current = false, count } = Astro.props;
 const tag = await getEntry('tags', id);
 const label = tag?.data.label ?? id;
 const Tag = href ? 'a' : 'span';
 ---
 
-<Tag class="chip" href={href}>{label}</Tag>
+<Tag class:list={['chip', { current }]} href={href} aria-current={current ? 'page' : undefined}>
+  {label}{count !== undefined && <span class="count">{count}</span>}
+</Tag>
 
 <style>
   /* Old site tag pill: rounded, slightly lighter than the panel, 11px semibold */
   .chip {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
     padding: 4px 14px;
     font-size: 0.6875rem;
     font-weight: 600;
@@ -34,4 +42,10 @@ const Tag = href ? 'a' : 'span';
     color: var(--c-text);
     border-color: var(--c-secondary);
   }
+  .chip.current {
+    color: var(--c-bg);
+    background: var(--c-secondary);
+  }
+  .chip.current:hover { color: var(--c-bg); }
+  .count { opacity: 0.8; }
 </style>

@@ -1,9 +1,18 @@
 ---
-// Placeholder until the "Projects" card replaces it.
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ComingSoon from '../../components/ComingSoon.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import ProjectFilter from '../../components/ProjectFilter.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import { getPublishedProjects, getTagsInUse } from '../../lib/projects';
+
+const projects = await getPublishedProjects();
+const tags = await getTagsInUse(projects);
 ---
 
-<BaseLayout title="Projects" description="Projects · Justin Oxford">
-  <ComingSoon title="Projects" />
+<BaseLayout title="Projects" description="Projects by Justin Oxford: code, games, mods, and experiments.">
+  <div class="container">
+    <PageBanner title="Projects" />
+    <ProjectFilter tags={tags} total={projects.length} />
+    <ProjectGrid projects={projects} />
+  </div>
 </BaseLayout>

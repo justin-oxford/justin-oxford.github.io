@@ -1,0 +1,107 @@
+---
+// Project detail: /projects/<slug>/ (slug = Markdown filename).
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import DateRange from '../../components/DateRange.astro';
+import Icon from '../../components/Icon.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import TagChip from '../../components/TagChip.astro';
+import { getPublishedProjects, tagUrl } from '../../lib/projects';
+
+export const getStaticPaths = (async () => {
+  const projects = await getPublishedProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const { repo, live, download } = data.links;
+const hasLinks = Boolean(repo || live || download);
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+  <article class="container container--narrow project">
+    <!-- Old project page: small gray date, centered title with sage underline, gray subtitle -->
+    <header class="head">
+      <p class="date"><DateRange start={data.started} end={data.ended} /></p>
+      <h1>{data.title}</h1>
+      <p class="summary">{data.summary}</p>
+      <div class="meta">
+        <StatusBadge status={data.status} />
+        {data.tags.length > 0 && (
+          <ul class="tags" aria-label="Tags">
+            {data.tags.map((t) => <li><TagChip id={t} href={tagUrl(t)} /></li>)}
+          </ul>
+        )}
+      </div>
+      {hasLinks && (
+        <ul class="links">
+          {live && <li><Button href={live}>{live.startsWith('/play/') ? 'Play' : 'View live'}<Icon name="arrow" /></Button></li>}
+          {repo && <li><Button href={repo} variant="alt"><Icon name="github" />Source</Button></li>}
+          {download && <li><Button href={download} variant="ghost">Download</Button></li>}
+        </ul>
+      )}
+    </header>
+
+    {data.cover && data.coverAlt && (
+      <figure class="cover">
+        <Image src={data.cover} alt={data.coverAlt} widths={[400, 800, 1200]} sizes="(max-width: 48rem) 100vw, 46rem" />
+      </figure>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <p class="back"><a href="/projects/">← All projects</a></p>
+  </article>
+</BaseLayout>
+
+<style>
+  .project { padding-block: var(--sp-6) 0; }
+  .head { text-align: center; margin-bottom: var(--sp-6); }
+  .date { margin: 0 0 var(--sp-3); }
+  h1 {
+    display: inline-block;
+    margin: 0 auto var(--sp-4);
+    padding: 3px 3px var(--sp-2);
+    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--c-text);
+    border-bottom: 1px solid var(--c-sage);
+  }
+  .summary {
+    max-width: 36rem;
+    margin: 0 auto var(--sp-4);
+    font-size: 1.125rem;
+    color: var(--c-secondary);
+  }
+  .meta, .tags, .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .tags, .links { margin: 0; padding: 0; list-style: none; }
+  .links { gap: var(--sp-4); margin-top: var(--sp-5); }
+
+  /* Old .project-gallery: 24px corners and a soft shadow */
+  .cover {
+    margin: 0 0 var(--sp-7);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 7px 7px 12px 0 rgb(0 0 0 / 0.2);
+  }
+  .cover :global(img) { width: 100%; }
+  @media (max-width: 30rem) {
+    .cover { border-radius: var(--radius-sm); }
+  }
+
+  .back { margin: var(--sp-7) 0 0; }
+</style>

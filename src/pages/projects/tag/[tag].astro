@@ -1,0 +1,36 @@
+---
+// Static tag pages: /projects/tag/<tag>/. Only tags used by a published project get a page.
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageBanner from '../../../components/PageBanner.astro';
+import ProjectFilter from '../../../components/ProjectFilter.astro';
+import ProjectGrid from '../../../components/ProjectGrid.astro';
+import { getPublishedProjects, getTagsInUse } from '../../../lib/projects';
+
+export const getStaticPaths = (async () => {
+  const projects = await getPublishedProjects();
+  const tags = await getTagsInUse(projects);
+  return tags.map((tag) => ({
+    params: { tag: tag.id },
+    props: {
+      tag,
+      tags,
+      total: projects.length,
+      projects: projects.filter((p) => p.data.tags.includes(tag.id)),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { tag, tags, total, projects } = Astro.props;
+---
+
+<BaseLayout
+  title={`${tag.label} projects`}
+  description={`Projects by Justin Oxford tagged ${tag.label}.`}
+>
+  <div class="container">
+    <PageBanner title="Projects" subtitle={tag.label} />
+    <ProjectFilter tags={tags} total={total} current={tag.id} />
+    <ProjectGrid projects={projects} />
+  </div>
+</BaseLayout>

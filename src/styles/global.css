@@ -176,6 +176,46 @@ html { scrollbar-color: var(--c-rule-strong) var(--c-bg); }
 .panel a { color: var(--c-secondary); }
 .panel a:hover { color: var(--c-text); }
 
+/* Markdown write-ups (project and writing bodies) */
+.prose { font-size: 1.0625rem; }
+.prose > :first-child { margin-top: 0; }
+.prose h2 {
+  margin: var(--sp-7) 0 var(--sp-4);
+  padding-bottom: var(--sp-2);
+  font-size: var(--fs-xl);
+  border-bottom: var(--rule);
+}
+.prose h3 { margin: var(--sp-6) 0 var(--sp-3); font-size: var(--fs-lg); }
+.prose h4 { margin: var(--sp-5) 0 var(--sp-2); font-size: var(--fs-base); }
+.prose ul, .prose ol { margin: 0 0 var(--sp-4); padding-left: 1.4em; }
+.prose li { margin-bottom: var(--sp-2); }
+.prose li::marker { color: var(--c-secondary); }
+.prose blockquote {
+  margin: var(--sp-5) 0;
+  padding: var(--sp-2) var(--sp-5);
+  border-left: 3px solid var(--c-sage);
+  color: var(--c-secondary);
+}
+.prose code {
+  padding: 0.1em 0.35em;
+  background: var(--c-surface);
+  border-radius: 6px;
+}
+.prose pre {
+  margin: 0 0 var(--sp-5);
+  padding: var(--sp-4) var(--sp-5);
+  overflow-x: auto;
+  background: var(--c-surface) !important;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+}
+.prose pre code { padding: 0; background: none; }
+.prose img { margin: var(--sp-5) 0; border-radius: var(--radius-sm); }
+.prose hr { margin: var(--sp-7) 0; }
+.prose table { width: 100%; margin: 0 0 var(--sp-5); border-collapse: collapse; font-size: var(--fs-sm); }
+.prose th, .prose td { padding: var(--sp-2) var(--sp-3); border-bottom: var(--rule); text-align: left; }
+.prose th { color: var(--c-secondary); font-weight: 600; }
+
 .visually-hidden {
   position: absolute !important;
   width: 1px; height: 1px;
