@@ -1,42 +1,50 @@
 /* ==========================================================================
    Design tokens
-   Direction: dark, warm, understated. Instrument panel / chronograph dial.
+   Carried over from the old site (justin-oxford-dot-com, client/src/styles):
+   near-black + charcoal, lavender primary, sage accent, cream/white text,
+   Montserrat throughout, generously rounded corners.
    ========================================================================== */
 :root {
   color-scheme: dark;
 
-  /* Color */
-  --c-bg: #14110e;          /* warm off-black */
-  --c-surface: #1b1713;     /* raised panels, cards */
-  --c-surface-2: #241f19;   /* hover / inset */
-  --c-rule: #3a3229;        /* hairlines, tick marks */
-  --c-rule-strong: #5a4e40;
-  --c-text: #ece4d4;        /* cream */
-  --c-text-muted: #a99e8b;
-  --c-accent: #e2a646;      /* amber */
-  --c-accent-strong: #f0bd6a;
-  --c-on-accent: #14110e;
-  --c-signal: #9cbc7e;      /* muted instrument green: "active" */
-  --c-focus: #f0bd6a;
+  /* Color: old site names in comments */
+  --c-bg: #1a1a1a;            /* $theme-black */
+  --c-surface: #272727;       /* lighten($theme-black, 5): panels */
+  --c-surface-2: #343434;     /* lighten($theme-black, 10): hover */
+  --c-chip: #3c3c3c;          /* lighten($theme-black, 13): tag pills */
+  --c-rule: #404040;          /* lighten($theme-black, 15) */
+  --c-rule-strong: #4d4d4d;   /* lighten($theme-black, 20): dividers */
+  --c-charcoal: #2a2b2e;      /* $dark-shade-col */
+  --c-text: #ffffff;          /* $theme-white / $lite-white-col */
+  --c-cream: #ffffea;         /* $lite-shade-col: nav, header */
+  --c-cream-warm: #fff4e5;    /* $theme-lite: big titles */
+  --c-text-muted: #bfbfbf;    /* darken($theme-white, 25): tag text */
+  --c-primary: #8783d1;       /* $theme-primary: lavender */
+  --c-secondary: #a9a7d1;     /* $theme-secondary: descriptions, footer, hover */
+  --c-sage: #a4c2a8;          /* $lite-accnt-col: nav hover, "active" */
+  --c-sage-dark: #8da690;     /* $deegee-gr-drk: alt button */
+  --c-terracotta: #c57b57;    /* $theme-accent_2 */
+  --c-navy: #4d5278;          /* $main-brand-col */
+  --c-focus: #a9a7d1;
 
-  /* Type families (Astro <Font> sets --font-*; these add the fallback stacks) */
-  --ff-display: var(--font-display-a, Georgia), Georgia, 'Times New Roman', serif;
-  --ff-body: var(--font-body-a, system-ui), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --ff-mono: var(--font-mono, ui-monospace), ui-monospace, Consolas, 'Liberation Mono', monospace;
+  /* Type: Montserrat everywhere, like the old site */
+  --ff-body: var(--font-montserrat, system-ui), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ff-display: var(--ff-body);
 
-  /* Type scale (fluid, ~1.25 ratio) */
-  --fs-xs: 0.8125rem;
-  --fs-sm: 0.9375rem;
-  --fs-base: 1.0625rem;
-  --fs-lg: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
-  --fs-xl: clamp(1.5rem, 1.3rem + 0.9vw, 1.875rem);
-  --fs-2xl: clamp(1.875rem, 1.5rem + 1.8vw, 2.75rem);
-  --fs-3xl: clamp(2.375rem, 1.8rem + 3vw, 4rem);
-  --lh-tight: 1.15;
+  /* Type scale (fluid) */
+  --fs-xs: 0.75rem;     /* 12px: footer subtext */
+  --fs-sm: 0.875rem;    /* 14px: descriptions, footer */
+  --fs-base: 1rem;
+  --fs-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --fs-xl: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --fs-2xl: clamp(1.625rem, 1.3rem + 1.5vw, 2.25rem);
+  --fs-3xl: clamp(2.25rem, 1.4rem + 4.5vw, 4.5rem);
+  --lh-tight: 1.1;
   --lh-body: 1.6;
-  --tracking-caps: 0.12em;
+  --tracking: 1px;
+  --tracking-title: 2px;
 
-  /* Space (4px base) */
+  /* Space */
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 0.75rem;
@@ -47,15 +55,22 @@
   --sp-8: 4.5rem;
 
   /* Layout */
-  --w-content: 44rem;   /* reading measure */
-  --w-wide: 72rem;
-  --gutter: clamp(1rem, 4vw, 2rem);
+  --w-content: 46rem;
+  --w-wide: 75rem;      /* old site max-width: 1200px */
+  --gutter: clamp(1.25rem, 4vw, 2rem);
 
-  /* Shape & motion */
-  --radius: 4px;
-  --rule: 1px solid var(--c-rule);
-  --dur: 160ms;
-  --ease: cubic-bezier(0.2, 0, 0, 1);
+  /* Shape */
+  --radius-sm: 12px;    /* buttons */
+  --radius: 20px;       /* cards */
+  --radius-lg: 30px;    /* panels */
+  --radius-pill: 100px; /* tags */
+  --rule: 1px solid var(--c-rule-strong);
+  --shadow-btn: 3px 3px 6px 0 var(--c-bg);
+  --shadow-btn-hover: 5px 5px 12px 0 #000;
+
+  /* Motion */
+  --dur: 200ms;
+  --ease: ease;
 }
 
 /* ==========================================================================
@@ -78,49 +93,57 @@ body {
   font-family: var(--ff-body);
   font-size: var(--fs-base);
   line-height: var(--lh-body);
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 main { flex: 1; }
 
 h1, h2, h3, h4 {
   font-family: var(--ff-display);
-  font-weight: 600;
   line-height: var(--lh-tight);
   margin: 0 0 var(--sp-4);
   text-wrap: balance;
 }
-h1 { font-size: var(--fs-3xl); }
-h2 { font-size: var(--fs-2xl); }
-h3 { font-size: var(--fs-xl); }
-h4 { font-size: var(--fs-lg); }
+h1 {
+  font-size: var(--fs-3xl);
+  font-weight: 900;
+  letter-spacing: var(--tracking-title);
+  color: var(--c-cream-warm);
+}
+h2 { font-size: var(--fs-2xl); font-weight: 600; color: var(--c-primary); }
+h3 { font-size: var(--fs-xl); font-weight: 700; }
+h4 { font-size: var(--fs-lg); font-weight: 600; }
 
 p { margin: 0 0 var(--sp-4); text-wrap: pretty; }
 
 a {
-  color: var(--c-accent);
+  color: var(--c-primary);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
-a:hover { color: var(--c-accent-strong); }
+a:hover { color: var(--c-secondary); }
 
 :focus-visible {
   outline: 2px solid var(--c-focus);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 img { max-width: 100%; height: auto; display: block; }
 
 hr { border: 0; border-top: var(--rule); margin: var(--sp-6) 0; }
 
-code, kbd, samp, .mono {
-  font-family: var(--ff-mono);
-  font-variant-numeric: tabular-nums;
+code, kbd, samp {
+  font-family: ui-monospace, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
 }
-code { font-size: 0.9em; }
 
-::selection { background: var(--c-accent); color: var(--c-on-accent); }
+::selection { background: var(--c-primary); color: var(--c-text); }
+
+/* Old site scrollbar feel: dark track, charcoal thumb */
+html { scrollbar-color: var(--c-rule-strong) var(--c-bg); }
 
 /* ==========================================================================
    Utilities
@@ -133,15 +156,25 @@ code { font-size: 0.9em; }
 }
 .container--narrow { max-width: calc(var(--w-content) + 2 * var(--gutter)); }
 
+/* Small label text (old .ft-subtext) */
 .eyebrow {
-  font-family: var(--ff-mono);
   font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-caps);
+  font-weight: 600;
+  letter-spacing: var(--tracking);
   text-transform: uppercase;
-  color: var(--c-text-muted);
+  color: var(--c-secondary);
 }
 
-.muted { color: var(--c-text-muted); }
+.muted { color: var(--c-secondary); }
+
+.panel {
+  padding: var(--sp-5) var(--sp-6);
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+}
+/* Lavender is 4.4:1 on the panel gray; the lighter lavender gray keeps links readable. */
+.panel a { color: var(--c-secondary); }
+.panel a:hover { color: var(--c-text); }
 
 .visually-hidden {
   position: absolute !important;
@@ -155,5 +188,9 @@ code { font-size: 0.9em; }
 
 /* Motion is opt-in: only when the user hasn't asked for reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
-  a, button, .card { transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+  a, button, .card, .btn {
+    transition-property: color, background-color, border-color, box-shadow, padding, transform;
+    transition-duration: var(--dur);
+    transition-timing-function: var(--ease);
+  }
 }

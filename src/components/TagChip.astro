@@ -16,20 +16,22 @@ const Tag = href ? 'a' : 'span';
 <Tag class="chip" href={href}>{label}</Tag>
 
 <style>
+  /* Old site tag pill: rounded, slightly lighter than the panel, 11px semibold */
   .chip {
     display: inline-block;
-    padding: 0.1em 0.6em;
-    font-family: var(--ff-mono);
-    font-size: var(--fs-xs);
-    line-height: 1.6;
+    padding: 4px 14px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
     color: var(--c-text-muted);
-    border: 1px solid var(--c-rule-strong);
-    border-radius: 999px;
+    background: var(--c-chip);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-pill);
     text-decoration: none;
     white-space: nowrap;
   }
   a.chip:hover {
     color: var(--c-text);
-    border-color: var(--c-accent);
+    border-color: var(--c-secondary);
   }
 </style>

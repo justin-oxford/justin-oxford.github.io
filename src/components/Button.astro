@@ -2,7 +2,8 @@
 interface Props {
   /** Renders a link when set, otherwise a <button>. */
   href?: string;
-  variant?: 'primary' | 'ghost';
+  /** primary = lavender, alt = sage (old DeeDee button), ghost = outline */
+  variant?: 'primary' | 'alt' | 'ghost';
   type?: 'button' | 'submit';
 }
 const { href, variant = 'primary', type = 'button' } = Astro.props;
@@ -17,38 +18,41 @@ const { href, variant = 'primary', type = 'button' } = Astro.props;
 }
 
 <style>
+  /* Old site button: rounded 12px, bold white text, soft drop shadow that grows on hover.
+     Text is 19px/700 so white on lavender meets WCAG contrast for large text. */
   .btn {
     display: inline-flex;
     align-items: center;
     gap: var(--sp-2);
-    min-height: 2.75rem; /* comfortable touch target */
-    padding: var(--sp-2) var(--sp-5);
+    min-height: 2.75rem;
+    padding: 0.6rem 1rem;
     font: inherit;
-    font-family: var(--ff-mono);
-    font-size: var(--fs-sm);
-    font-weight: 500;
-    letter-spacing: 0.04em;
+    font-size: 1.1875rem;
+    font-weight: 700;
+    line-height: 1.2;
     text-decoration: none;
-    border-radius: var(--radius);
-    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
+    box-shadow: var(--shadow-btn);
     cursor: pointer;
   }
-  .primary {
-    background: var(--c-accent);
-    color: var(--c-on-accent);
+  .btn:hover {
+    padding-inline: 1.3rem;
+    box-shadow: var(--shadow-btn-hover);
   }
-  .primary:hover {
-    background: var(--c-accent-strong);
-    color: var(--c-on-accent);
-  }
+  .primary { background: var(--c-primary); color: var(--c-text); }
+  .primary:hover { color: var(--c-text); background: #7d79c9; }
+  .alt { background: var(--c-sage-dark); color: var(--c-bg); }
+  .alt:hover { color: var(--c-bg); background: var(--c-sage); }
   .ghost {
-    background: transparent;
+    background: var(--c-surface);
     color: var(--c-text);
     border-color: var(--c-rule-strong);
+    box-shadow: none;
   }
   .ghost:hover {
     color: var(--c-text);
-    border-color: var(--c-accent);
-    background: var(--c-surface-2);
+    border-color: var(--c-secondary);
+    box-shadow: none;
   }
 </style>

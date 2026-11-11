@@ -1,6 +1,5 @@
 ---
 // Design system reference. noindex, not in the nav. Removed in "Launch polish".
-import { Font } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ProjectCard from '../components/ProjectCard.astro';
@@ -9,20 +8,34 @@ import StatusBadge from '../components/StatusBadge.astro';
 import Button from '../components/Button.astro';
 import DateRange from '../components/DateRange.astro';
 
+// [token, name, old-site variable, use]
 const colors = [
-  ['--c-bg', 'Background', 'Warm off-black'],
-  ['--c-surface', 'Surface', 'Cards, panels'],
-  ['--c-surface-2', 'Surface 2', 'Hover, inset'],
-  ['--c-rule', 'Rule', 'Hairlines, minor ticks'],
-  ['--c-rule-strong', 'Rule strong', 'Borders, major ticks'],
-  ['--c-text', 'Text', 'Cream'],
-  ['--c-text-muted', 'Text muted', 'Secondary text'],
-  ['--c-accent', 'Accent', 'Amber: links, primary'],
-  ['--c-accent-strong', 'Accent strong', 'Hover, focus'],
-  ['--c-signal', 'Signal', 'Active status only'],
+  ['--c-bg', 'Background', '$theme-black', 'Page background'],
+  ['--c-surface', 'Surface', 'lighten(black, 5)', 'Panels, cards'],
+  ['--c-surface-2', 'Surface 2', 'lighten(black, 10)', 'Hover'],
+  ['--c-chip', 'Chip', 'lighten(black, 13)', 'Tag pills, badges'],
+  ['--c-rule-strong', 'Divider', 'lighten(black, 20)', 'Rules, borders'],
+  ['--c-charcoal', 'Charcoal', '$dark-shade-col', 'Alternate panel'],
+  ['--c-text', 'White', '$theme-white', 'Body text'],
+  ['--c-cream', 'Cream', '$lite-shade-col', 'Nav, header'],
+  ['--c-cream-warm', 'Warm cream', '$theme-lite', 'Big titles'],
+  ['--c-text-muted', 'Muted', 'darken(white, 25)', 'Tags, dates'],
+  ['--c-primary', 'Lavender', '$theme-primary', 'Links, buttons, headings'],
+  ['--c-secondary', 'Lavender gray', '$theme-secondary', 'Descriptions, footer'],
+  ['--c-sage', 'Sage', '$lite-accnt-col', 'Nav hover, Active'],
+  ['--c-sage-dark', 'Sage dark', '$deegee-gr-drk', 'Alt button'],
+  ['--c-terracotta', 'Terracotta', '$theme-accent_2', 'Shelved, TODOs'],
+  ['--c-navy', 'Navy', '$main-brand-col', 'Spare'],
 ];
 const sizes = ['3xl', '2xl', 'xl', 'lg', 'base', 'sm', 'xs'];
+const weights = [300, 400, 500, 600, 700, 900];
 const space = [1, 2, 3, 4, 5, 6, 7, 8];
+const radii = [
+  ['--radius-sm', '12px', 'Buttons'],
+  ['--radius', '20px', 'Cards'],
+  ['--radius-lg', '30px', 'Panels'],
+  ['--radius-pill', '100px', 'Tags'],
+];
 
 // Sample data for the component demos (wording from the Content Model card).
 const sample = {
@@ -34,100 +47,89 @@ const sample = {
   ended: '2019-08',
   tags: ['javascript', 'game-dev', 'physics'],
 };
-
-const pairings = [
-  {
-    key: 'a',
-    name: 'A · Fraunces + Source Sans 3',
-    note: 'Warm, slightly old-style serif headings over a plain, readable sans. Weathered and literary. Current default.',
-  },
-  {
-    key: 'b',
-    name: 'B · Barlow Condensed + Barlow',
-    note: 'Condensed, signage-like headings (think panel placards and airport wayfinding) over a matching sans. More technical.',
-  },
-];
 ---
 
 <BaseLayout title="Styleguide" description="Design tokens and components for justinoxford.com." noindex>
-  <Fragment slot="head">
-    <Font cssVariable="--font-display-b" />
-    <Font cssVariable="--font-body-b" />
-  </Fragment>
-
   <div class="container sg">
     <header class="intro">
       <p class="eyebrow">Internal · not indexed</p>
       <h1>Styleguide</h1>
       <p class="muted">
-        Direction: dark, warm, and understated, like a well-worn instrument panel or a chronograph dial.
-        Every page is built from these tokens and components.
+        Carried over from the old site: near-black and charcoal, lavender and sage accents, cream and white
+        text, Montserrat throughout, and generously rounded corners.
       </p>
     </header>
 
-    <!-- Colors -->
     <section aria-labelledby="colors">
-      <SectionHeading index="01" id="colors">Color</SectionHeading>
+      <SectionHeading id="colors">Color</SectionHeading>
       <ul class="swatches">
-        {colors.map(([v, name, use]) => (
+        {colors.map(([v, name, old, use]) => (
           <li>
             <span class="swatch" style={`background: var(${v})`}></span>
             <span class="sw-name">{name}</span>
             <code class="sw-var">{v}</code>
-            <span class="sw-use muted">{use}</span>
+            <span class="sw-old">{old}</span>
+            <span class="sw-use">{use}</span>
           </li>
         ))}
       </ul>
     </section>
 
-    <!-- Type -->
     <section aria-labelledby="type">
-      <SectionHeading index="02" id="type">Type</SectionHeading>
-      <h3 class="sub">Typeface pairing: pick one</h3>
-      <div class="pairings">
-        {pairings.map((p) => (
-          <article class:list={['pairing', `pairing-${p.key}`]}>
-            <p class="eyebrow">{p.name}</p>
-            <p class="pair-display">Safe Travels</p>
-            <p class="pair-body">
-              A catalog of projects, writing, and an aviation career, set at body size for reading.{' '}
-              <em>Italic for emphasis.</em>
-            </p>
-            <p class="mono pair-mono">CL-65 · 2019-06 → 2019-08 · 0123456789</p>
-            <p class="muted pair-note">{p.note}</p>
-          </article>
+      <SectionHeading id="type">Type</SectionHeading>
+      <p class="muted">Montserrat, self-hosted. Tabular figures site-wide so dates line up.</p>
+
+      <h3 class="sub">Weights</h3>
+      <ul class="weights">
+        {weights.map((w) => (
+          <li style={`font-weight: ${w}`}><code>{w}</code> Safe Travels</li>
         ))}
+      </ul>
+
+      <h3 class="sub">Headings</h3>
+      <div class="panel">
+        <p class="h1-demo">Justin Oxford</p>
+        <h2 class="h2-demo">Panel title (h2)</h2>
+        <h3>Item title (h3)</h3>
+        <p>Body text in white at 16px. <a href="#type">Links are lavender</a>, and <em>italic is real italic</em>.</p>
+        <p class="muted">Descriptions use lavender gray.</p>
+        <p class="eyebrow">Small label text</p>
       </div>
-      <p class="muted small">Figures, dates, nav, and labels use <strong>IBM Plex Mono</strong> with tabular numerals in both options. All fonts are open-licensed and self-hosted.</p>
 
       <h3 class="sub">Scale</h3>
       <ul class="scale">
         {sizes.map((s) => (
           <li>
-            <code class="muted">--fs-{s}</code>
-            <span style={`font-size: var(--fs-${s}); font-family: ${['3xl', '2xl', 'xl', 'lg'].includes(s) ? 'var(--ff-display)' : 'var(--ff-body)'}`}>Weathered and confident</span>
+            <code>--fs-{s}</code>
+            <span style={`font-size: var(--fs-${s}); font-weight: ${['3xl', '2xl'].includes(s) ? 700 : 400}`}>Safe Travels</span>
           </li>
         ))}
       </ul>
-      <p class="eyebrow">Eyebrow / label text</p>
     </section>
 
-    <!-- Space -->
-    <section aria-labelledby="space">
-      <SectionHeading index="03" id="space">Space</SectionHeading>
+    <section aria-labelledby="shape">
+      <SectionHeading id="shape">Shape and space</SectionHeading>
+      <ul class="radii">
+        {radii.map(([v, px, use]) => (
+          <li>
+            <span class="radius-demo" style={`border-radius: var(${v})`}></span>
+            <code>{v}</code>
+            <span class="muted">{px} · {use}</span>
+          </li>
+        ))}
+      </ul>
       <ul class="space">
         {space.map((n) => (
           <li>
-            <code class="muted">--sp-{n}</code>
+            <code>--sp-{n}</code>
             <span class="bar" style={`width: var(--sp-${n})`}></span>
           </li>
         ))}
       </ul>
     </section>
 
-    <!-- Components -->
     <section aria-labelledby="components">
-      <SectionHeading index="04" id="components">Components</SectionHeading>
+      <SectionHeading id="components">Components</SectionHeading>
 
       <h3 class="sub">Project card</h3>
       <div class="cards">
@@ -168,9 +170,9 @@ const pairings = [
 
       <h3 class="sub">Button</h3>
       <div class="row">
-        <Button href="#components">Primary link</Button>
-        <Button href="#components" variant="ghost">Ghost link</Button>
-        <Button variant="ghost">Button element</Button>
+        <Button href="#components">Primary</Button>
+        <Button href="#components" variant="alt">Alt</Button>
+        <Button variant="ghost">Ghost</Button>
       </div>
 
       <h3 class="sub">Date range</h3>
@@ -181,105 +183,66 @@ const pairings = [
       </div>
 
       <h3 class="sub">Section heading</h3>
-      <SectionHeading as="h3">Without an index</SectionHeading>
-
-      <h3 class="sub">Prose</h3>
-      <div class="prose">
-        <p>
-          Body copy sits at a comfortable reading measure. <a href="#components">Links are amber</a> with a thin
-          underline, and <code>inline code</code> uses the mono face.
-        </p>
-      </div>
+      <SectionHeading as="h3">Section heading</SectionHeading>
     </section>
 
-    <!-- Pairing B preview -->
-    <section aria-labelledby="preview-b" class="pairing-b">
-      <SectionHeading index="05" id="preview-b">Pairing B, applied</SectionHeading>
-      <p class="muted">The same components with pairing B, for comparison.</p>
-      <div class="cards">
-        <ProjectCard {...sample} />
-      </div>
-    </section>
-
-    <!-- Decisions -->
     <section aria-labelledby="decisions">
-      <SectionHeading index="06" id="decisions">Open decisions</SectionHeading>
+      <SectionHeading id="decisions">Open decisions</SectionHeading>
       <ul class="decisions">
-        <li>Approve this direction, or share 2–3 reference sites.</li>
         <li>Dark only (current), or dark + light.</li>
         <li>Keep “Safe Travels” in the footer (currently on).</li>
-        <li>Typeface pairing A or B.</li>
+        <li>Domain email address for the footer.</li>
       </ul>
     </section>
   </div>
 </BaseLayout>
 
 <style>
-  .sg { padding-block: var(--sp-7); }
+  .sg { padding-block: var(--sp-6) var(--sp-7); }
   .intro { max-width: var(--w-content); margin-bottom: var(--sp-7); }
   section { margin-bottom: var(--sp-8); }
   .sub {
     margin: var(--sp-6) 0 var(--sp-4);
-    font-family: var(--ff-mono);
     font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: var(--tracking-caps);
+    font-weight: 600;
+    letter-spacing: var(--tracking);
     text-transform: uppercase;
-    color: var(--c-text-muted);
+    color: var(--c-secondary);
   }
   .small { font-size: var(--fs-sm); }
+  code { color: var(--c-text-muted); font-size: var(--fs-xs); }
 
   .swatches {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: var(--sp-5) var(--sp-4);
     margin: 0; padding: 0; list-style: none;
   }
-  .swatches li { display: grid; gap: var(--sp-1); font-size: var(--fs-sm); }
+  .swatches li { display: grid; gap: 2px; font-size: var(--fs-sm); }
   .swatch {
     height: 4rem;
+    margin-bottom: var(--sp-2);
     border: 1px solid var(--c-rule-strong);
-    border-radius: var(--radius);
+    border-radius: var(--radius-sm);
   }
   .sw-name { font-weight: 600; }
-  .sw-var { font-size: var(--fs-xs); color: var(--c-text-muted); }
-  .sw-use { font-size: var(--fs-xs); }
+  .sw-old { font-size: var(--fs-xs); color: var(--c-secondary); }
+  .sw-use { font-size: var(--fs-xs); color: var(--c-text-muted); }
 
-  .pairings {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-    gap: var(--sp-5);
-    margin-bottom: var(--sp-4);
-  }
-  .pairing {
-    padding: var(--sp-5);
-    background: var(--c-surface);
-    border: var(--rule);
-    border-radius: var(--radius);
-  }
-  .pair-display {
-    margin: var(--sp-3) 0;
-    font-family: var(--ff-display);
-    font-size: var(--fs-2xl);
-    font-weight: 600;
+  .weights { margin: 0; padding: 0; list-style: none; font-size: var(--fs-xl); }
+  .weights li { display: flex; align-items: baseline; gap: var(--sp-4); }
+  .weights code { width: 2.5rem; }
+
+  .h1-demo {
+    margin: 0 0 var(--sp-4);
+    font-size: var(--fs-3xl);
+    font-weight: 900;
+    letter-spacing: var(--tracking-title);
     line-height: var(--lh-tight);
-  }
-  .pair-body { font-family: var(--ff-body); }
-  .pair-mono { font-size: var(--fs-sm); color: var(--c-accent); }
-  .pair-note { font-size: var(--fs-sm); margin: 0; }
-
-  /* Pairing overrides: custom properties cascade into component styles */
-  .pairing-a {
-    --ff-display: var(--font-display-a, Georgia), Georgia, serif;
-    --ff-body: var(--font-body-a, system-ui), system-ui, sans-serif;
-  }
-  .pairing-b {
-    --ff-display: var(--font-display-b, 'Arial Narrow'), 'Arial Narrow', sans-serif;
-    --ff-body: var(--font-body-b, system-ui), system-ui, sans-serif;
-    font-family: var(--ff-body);
+    color: var(--c-cream-warm);
   }
 
-  .scale, .space { margin: 0; padding: 0; list-style: none; }
+  .scale, .space, .radii { margin: 0; padding: 0; list-style: none; }
   .scale li {
     display: grid;
     grid-template-columns: 6rem 1fr;
@@ -289,9 +252,21 @@ const pairings = [
     border-bottom: var(--rule);
     overflow-wrap: anywhere;
   }
-  .scale code, .space code { font-size: var(--fs-xs); }
+  .radii {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--sp-5);
+    margin-bottom: var(--sp-6);
+  }
+  .radii li { display: grid; gap: var(--sp-1); font-size: var(--fs-sm); }
+  .radius-demo {
+    height: 4rem;
+    margin-bottom: var(--sp-2);
+    background: var(--c-surface);
+    border: 1.5px solid var(--c-secondary);
+  }
   .space li { display: grid; grid-template-columns: 6rem 1fr; align-items: center; gap: var(--sp-4); padding-block: var(--sp-1); }
-  .space .bar { height: 0.75rem; background: var(--c-accent); border-radius: 1px; }
+  .space .bar { height: 0.75rem; background: var(--c-primary); border-radius: 4px; }
 
   .cards {
     display: grid;
@@ -304,7 +279,6 @@ const pairings = [
     align-items: center;
     gap: var(--sp-3) var(--sp-5);
   }
-  .prose { max-width: var(--w-content); }
   .decisions { padding-left: 1.2em; }
   .decisions li { margin-bottom: var(--sp-2); }
 

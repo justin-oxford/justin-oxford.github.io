@@ -6,29 +6,29 @@ const { status } = Astro.props;
 const labels = { active: 'Active', archived: 'Archived', shelved: 'Shelved' } as const;
 ---
 
-<span class:list={['badge', status]}><span class="lamp" aria-hidden="true"></span>{labels[status]}</span>
+<span class:list={['badge', status]}><span class="dot" aria-hidden="true"></span>{labels[status]}</span>
 
 <style>
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.45em;
-    font-family: var(--ff-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: var(--tracking-caps);
+    gap: 0.5em;
+    padding: 2px 12px 2px 10px;
+    font-size: 0.6875rem; /* 11px, like the old tag pills */
+    font-weight: 600;
+    letter-spacing: var(--tracking);
     text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    background: var(--c-chip);
     color: var(--c-text-muted);
     white-space: nowrap;
   }
-  /* small indicator lamp, like an annunciator light */
-  .lamp {
-    width: 0.55em;
-    height: 0.55em;
+  .dot {
+    width: 0.6em;
+    height: 0.6em;
     border-radius: 50%;
-    border: 1px solid currentColor;
+    background: currentColor;
   }
-  .active { color: var(--c-signal); }
-  .active .lamp { background: var(--c-signal); box-shadow: 0 0 6px color-mix(in srgb, var(--c-signal) 60%, transparent); }
-  .archived .lamp { background: var(--c-text-muted); }
-  .shelved .lamp { background: transparent; }
+  .active { color: var(--c-sage); }
+  .shelved .dot { background: transparent; border: 1.5px solid var(--c-terracotta); }
 </style>

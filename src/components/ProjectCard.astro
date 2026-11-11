@@ -32,30 +32,36 @@ const { title, summary, href, status, started, ended, tags = [], headingLevel: H
 </article>
 
 <style>
+  /* Old site featured item: 20px corners, soft diagonal gradient,
+     lavender-gray border and underlined title on hover */
   .card {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--sp-3);
     padding: var(--sp-5);
-    background: var(--c-surface);
-    border: var(--rule);
+    /* old: lighten($theme-black, 20) → 15; toned down so summary text keeps 4.5:1 contrast */
+    background: linear-gradient(155deg, #3a3a3a 0%, var(--c-surface) 100%);
+    border: 1.5px solid transparent;
     border-radius: var(--radius);
   }
   .card:hover,
   .card:focus-within {
-    border-color: var(--c-rule-strong);
-    background: var(--c-surface-2);
+    border-color: var(--c-secondary);
   }
+  .card:hover .title a { text-decoration: underline; }
   .meta {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: var(--sp-2);
   }
   .title {
     margin: 0;
-    font-size: var(--fs-xl);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0;
   }
   .title a {
     color: var(--c-text);
@@ -71,7 +77,7 @@ const { title, summary, href, status, started, ended, tags = [], headingLevel: H
   .card:has(.title a:focus-visible) { outline: 2px solid var(--c-focus); outline-offset: 3px; }
   .summary {
     margin: 0;
-    color: var(--c-text-muted);
+    color: var(--c-secondary);
   }
   .tags {
     display: flex;

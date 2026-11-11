@@ -1,47 +1,23 @@
 ---
 interface Props {
-  /** Optional index shown like a dial numeral, e.g. "01". */
-  index?: string;
   /** Heading level; defaults to h2. */
   as?: 'h1' | 'h2' | 'h3';
   id?: string;
 }
-const { index, as: Heading = 'h2', id } = Astro.props;
+const { as: Heading = 'h2', id } = Astro.props;
 ---
 
-<div class="section-heading">
-  {index && <span class="index mono" aria-hidden="true">{index}</span>}
-  <Heading class="title" id={id}><slot /></Heading>
-  <span class="ticks" aria-hidden="true"></span>
-</div>
+<Heading class="section-heading" id={id}><slot /></Heading>
 
 <style>
+  /* Old site panel title: lavender, semibold, with a divider underneath */
   .section-heading {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: baseline;
-    column-gap: var(--sp-3);
-    margin-bottom: var(--sp-5);
-  }
-  .index {
-    font-size: var(--fs-sm);
-    color: var(--c-accent);
-  }
-  .title {
-    margin: 0;
+    margin: 0 0 var(--sp-5);
+    padding-bottom: var(--sp-3);
     font-size: var(--fs-2xl);
-  }
-  .section-heading:not(:has(.index)) .title { grid-column: 1 / -1; }
-  /* hairline with minor/major tick marks, like a chronograph scale */
-  .ticks {
-    grid-column: 1 / -1;
-    height: 8px;
-    margin-top: var(--sp-3);
-    border-top: var(--rule);
-    background-image:
-      repeating-linear-gradient(to right, var(--c-rule-strong) 0 1px, transparent 1px 60px),
-      repeating-linear-gradient(to right, var(--c-rule) 0 1px, transparent 1px 12px);
-    background-size: 100% 8px, 100% 4px;
-    background-repeat: no-repeat;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--c-primary);
+    border-bottom: var(--rule);
   }
 </style>

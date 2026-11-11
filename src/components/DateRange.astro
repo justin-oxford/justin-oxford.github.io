@@ -15,7 +15,7 @@ const fmt = (v: string | number) => {
 const iso = (v: string | number) => String(v);
 ---
 
-<span class="date-range mono">
+<span class="date-range">
   <time datetime={iso(start)}>{fmt(start)}</time>
   {end !== undefined && end !== start && (
     <>
@@ -28,7 +28,9 @@ const iso = (v: string | number) => String(v);
 
 <style>
   .date-range {
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
     color: var(--c-text-muted);
     white-space: nowrap;
   }

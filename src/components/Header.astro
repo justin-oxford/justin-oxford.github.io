@@ -21,50 +21,56 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
 </header>
 
 <style>
-  .site-header {
-    border-bottom: var(--rule);
-  }
+  /* Old site: page title top-left in light cream, nav centered with a 3px underline */
   .bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--sp-2) var(--sp-5);
-    padding-block: var(--sp-4);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--sp-3) var(--sp-5);
+    padding-block: var(--sp-5) var(--sp-4);
   }
   .brand {
-    font-family: var(--ff-display);
-    font-size: var(--fs-lg);
-    font-weight: 600;
-    color: var(--c-text);
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: rgb(255 255 234 / 0.75); /* $lite-shade-col at 75% */
     text-decoration: none;
+    white-space: nowrap;
   }
+  .brand:hover { color: var(--c-cream); }
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sp-1) var(--sp-5);
+    justify-content: center;
+    gap: var(--sp-2) var(--sp-4);
     margin: 0;
     padding: 0;
     list-style: none;
   }
   nav a {
     display: inline-block;
-    padding-block: var(--sp-2);
-    font-family: var(--ff-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-    color: var(--c-text-muted);
+    padding: 4px 10px;
+    font-weight: 600;
+    letter-spacing: var(--tracking);
+    color: var(--c-cream);
     text-decoration: none;
-    border-bottom: 1px solid transparent;
+    border-bottom: 3px solid transparent;
   }
-  nav a:hover { color: var(--c-text); }
+  nav a:hover {
+    color: var(--c-cream);
+    border-bottom-color: var(--c-sage);
+  }
   nav a[aria-current='page'] {
-    color: var(--c-accent);
-    border-bottom-color: var(--c-accent);
+    font-weight: 700;
+    border-bottom-color: var(--c-text);
   }
-  @media (max-width: 30rem) {
-    .bar { flex-direction: column; align-items: flex-start; }
-    ul { gap: var(--sp-1) var(--sp-4); }
+  nav a[aria-current='page']:hover { border-bottom-color: var(--c-sage); }
+
+  @media (max-width: 48rem) {
+    .bar {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+    ul { gap: var(--sp-1) var(--sp-2); }
   }
 </style>
