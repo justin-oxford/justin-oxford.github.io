@@ -138,14 +138,20 @@ const timeline = defineCollection({
   schema: z
     .object({
       id: z.string(),
-      start: yearOrMonth,
+      // Drafts may leave start blank until the year is confirmed; published entries need it.
+      start: blankable(yearOrMonth),
       end: blankable(yearOrMonth),
       org: z.string().min(1),
       role: z.string().min(1),
       summary: z.string().min(1),
+      draft: z.boolean().default(false),
     })
     .strict()
-    .refine((t) => t.end === undefined || sortKey(t.end) >= sortKey(t.start), {
+    .refine((t) => t.draft || t.start !== undefined, {
+      message: 'start is required to publish (turn draft on, or add the year)',
+      path: ['start'],
+    })
+    .refine((t) => t.end === undefined || t.start === undefined || sortKey(t.end) >= sortKey(t.start), {
       message: 'end must not be before start',
       path: ['end'],
     }),
@@ -158,6 +164,7 @@ const certificates = defineCollection({
       id: z.string(),
       name: z.string().min(1),
       detail: blankable(z.string()),
+      draft: z.boolean().default(false),
     })
     .strict(),
 });

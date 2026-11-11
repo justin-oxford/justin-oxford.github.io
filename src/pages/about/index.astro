@@ -1,9 +1,183 @@
 ---
-// Placeholder until the "About" card replaces it.
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ComingSoon from '../../components/ComingSoon.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import DateRange from '../../components/DateRange.astro';
+import { showDrafts } from '../../lib/projects';
+import { site } from '../../site';
+
+const visible = <T extends { data: { draft: boolean } }>(e: T) => showDrafts || !e.data.draft;
+
+// timeline.yaml is oldest first; show newest first.
+const timeline = (await getCollection('timeline')).filter(visible).reverse();
+const certificates = (await getCollection('certificates')).filter(visible);
+
+const paragraphs = site.about.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const aboutIsTodo = site.about.startsWith('TODO(');
 ---
 
-<BaseLayout title="About" description="About · Justin Oxford">
-  <ComingSoon title="About" />
+<BaseLayout title="About" description="About Justin Oxford: career timeline, certificates, and ratings.">
+  <div class="container">
+    <PageBanner title="About" />
+
+    <section class="container--narrow intro" aria-label="Introduction">
+      {paragraphs.map((p) => <p class:list={{ todo: aboutIsTodo }}>{p}</p>)}
+    </section>
+
+    <div class="columns">
+      <section class="panel" aria-labelledby="career">
+        <SectionHeading id="career">Career</SectionHeading>
+        {
+          timeline.length > 0 ? (
+            <ol class="timeline">
+              {timeline.map(({ data }) => (
+                <li class:list={['entry', { draft: data.draft }]}>
+                  <p class="when">
+                    {data.start !== undefined ? <DateRange start={data.start} end={data.end} /> : <span class="todo-year">Year TBC</span>}
+                    {data.draft && <span class="draft-tag">Draft</span>}
+                  </p>
+                  <h3 class="role">{data.role}</h3>
+                  <p class="org">{data.org}</p>
+                  <p class="summary">{data.summary}</p>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p class="muted">Coming soon.</p>
+          )
+        }
+      </section>
+
+      <section class="panel" aria-labelledby="certificates">
+        <SectionHeading id="certificates">Certificates & ratings</SectionHeading>
+        {
+          certificates.length > 0 ? (
+            <ul class="certs">
+              {certificates.map(({ data }) => (
+                <li class:list={['cert', { draft: data.draft }]}>
+                  <span class="cert-name">{data.name}</span>
+                  {data.detail && <span class="cert-detail">{data.detail}</span>}
+                  {data.draft && <span class="draft-tag">Draft</span>}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="muted">Coming soon.</p>
+          )
+        }
+      </section>
+    </div>
+  </div>
 </BaseLayout>
+
+<style>
+  /* Old site About: intro paragraph, then rounded panels with lavender titles
+     (education, work history), list items split by dividers. */
+  .intro {
+    margin: 0 auto var(--sp-7);
+    padding: 0;
+    font-size: 1.125rem;
+    text-align: center;
+  }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro .todo {
+    display: inline-block;
+    font-size: var(--fs-sm);
+    color: var(--c-terracotta);
+    border: 1px dashed var(--c-terracotta);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-2) var(--sp-4);
+  }
+
+  .columns {
+    display: grid;
+    gap: var(--sp-6);
+    align-items: start;
+  }
+  @media (min-width: 60rem) {
+    .columns { grid-template-columns: 3fr 2fr; }
+  }
+
+  /* Timeline: a sage line with a dot per entry */
+  .timeline {
+    margin: 0;
+    padding: 0 0 0 var(--sp-5);
+    list-style: none;
+    border-left: 2px solid var(--c-rule-strong);
+  }
+  .entry {
+    position: relative;
+    padding-bottom: var(--sp-5);
+  }
+  .entry:last-child { padding-bottom: 0; }
+  .entry::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--sp-5) - 7px);
+    top: 0.45em;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--c-sage);
+    border: 2px solid var(--c-surface);
+  }
+  .entry.draft::before { background: var(--c-terracotta); }
+  .when {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    margin: 0 0 var(--sp-1);
+  }
+  .role {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+  .org {
+    margin: 0 0 var(--sp-2);
+    font-weight: 600;
+    color: var(--c-secondary);
+  }
+  .summary {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+  }
+  .todo-year { font-size: var(--fs-sm); color: var(--c-terracotta); }
+
+  .certs {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cert {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sp-1) var(--sp-3);
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--rule);
+  }
+  .cert:last-child { border-bottom: 0; padding-bottom: 0; }
+  .cert-name { font-weight: 700; }
+  .cert-detail { font-size: var(--fs-sm); color: var(--c-secondary); }
+
+  .draft-tag {
+    padding: 1px 10px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking);
+    text-transform: uppercase;
+    color: var(--c-bg);
+    background: var(--c-terracotta);
+    border-radius: var(--radius-pill);
+  }
+
+  @media (max-width: 30rem) {
+    .panel { padding: var(--sp-5) var(--sp-4); }
+  }
+</style>

@@ -192,15 +192,19 @@ content:
         description: "On: hidden from the live site, and its PDF isn't published. Turn off to publish."
 
   - name: home
-    label: Home page
+    label: Site text (Home & About)
     type: file
     path: src/data/site.yaml
     format: yaml
     fields:
       - name: bio
-        label: Bio
+        label: Home bio
         type: text
         description: 2–4 sentences. Avoid "currently"; it goes stale.
+      - name: about
+        label: About intro
+        type: text
+        description: A short narrative for the About page. Leave a blank line between paragraphs. Avoid "currently" and hour totals.
 
   - name: timeline
     label: Career timeline (About)
@@ -209,13 +213,17 @@ content:
     format: yaml
     list: true
     fields:
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: "On: hidden from the live site. Turn off once the entry is right."
       - name: start
         label: Start
         type: string
-        required: true
-        description: Year (2019) or year-month (2019-06)
+        description: Year (2019) or year-month (2019-06). Required to publish.
         pattern:
-          regex: "^\\d{4}(-(0[1-9]|1[0-2]))?$"
+          regex: "^(\\d{4}(-(0[1-9]|1[0-2]))?)?$"
           message: Use 2019 or 2019-06
       - name: end
         label: End
@@ -244,6 +252,11 @@ content:
     format: yaml
     list: true
     fields:
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: "On: hidden from the live site."
       - name: name
         label: Name
         type: string
