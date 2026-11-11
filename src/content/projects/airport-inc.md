@@ -1,10 +1,17 @@
 ---
 title: Airport Inc
-summary: An airport-building sim in Unity at real-world scale, with free-angle runways and physics-grounded aircraft movement.
-status: active          # TODO(Justin): last board activity 2026-07; active or shelved?
+summary: I spend a lot of time at airports. I think I can fix them. Surely this
+  isn't a fool's errand... An airport-building sim in Unity at real-world scale,
+  with free-angle runways and physics-grounded aircraft movement.
+status: active
 started: 2026-06
-tags: [unity, game-dev, simulation, aviation]
-draft: true
+tags:
+  - unity
+  - game-dev
+  - simulation
+  - aviation
+draft: false
+featured: false
 ---
 Airport Inc is an airport-building simulation I'm developing in Unity.
 
@@ -21,5 +28,3 @@ The simulation core is headless: it has no Unity engine references, saves contai
 ## Progress
 
 Done so far: the time system, map generation, a basic runway build system, taxiway validation, and a single-runway ATC model covering approach, tower, ground, and ramp (pushback). Parking and the runway build UI were next.
-
-TODO(Justin): screenshots, and what you want to say about where it's headed.
