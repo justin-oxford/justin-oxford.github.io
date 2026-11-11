@@ -1,8 +1,2 @@
-# Editable site text (also editable in Pages CMS under "Site text").
-# Avoid "currently" and ages; they go stale.
-
-# Home page intro: 2–4 sentences.
-bio: "TODO(Justin): short bio, 2–4 sentences."
-
-# About page intro: a short paragraph or two.
+bio: "Airline pilot. Tinkerer. Writer. Programmer. "
 about: "TODO(Justin): a short narrative for the About page."
