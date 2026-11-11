@@ -1,14 +1,105 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 import { site } from '../site';
+
+// Featured projects come from frontmatter (`featured: true`), newest first, max 3.
+const featured = (await getCollection('projects', ({ data }) => data.featured && !data.draft))
+  .sort((a, b) => b.data.started.localeCompare(a.data.started))
+  .slice(0, 3);
+
+const bioIsTodo = site.bio.startsWith('TODO(');
 ---
 
 <BaseLayout description="Justin Oxford: projects, writing, and aviation.">
-  <div class="container container--narrow hero">
-    <h1>{site.name}</h1>
-  </div>
+  <!-- Old site home: big centered name, a short intro, then a row of rounded buttons -->
+  <section class="container hero" aria-labelledby="name">
+    <h1 id="name">{site.name}</h1>
+    <p class:list={['bio', { todo: bioIsTodo }]}>{site.bio}</p>
+    <ul class="actions">
+      <li>
+        <Button href={site.github} variant="alt"><Icon name="github" />GitHub</Button>
+      </li>
+      <li>
+        <Button href={`mailto:${site.email}`}><Icon name="mail" />Email</Button>
+      </li>
+    </ul>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <section class="container featured" aria-labelledby="featured">
+        <SectionHeading id="featured">Featured projects</SectionHeading>
+        <div class="cards" style={`--cols: ${featured.length}`}>
+          {featured.map(({ id, data }) => (
+            <ProjectCard
+              title={data.title}
+              summary={data.summary}
+              href={`/projects/${id}/`}
+              status={data.status}
+              started={data.started}
+              ended={data.ended}
+              tags={data.tags}
+            />
+          ))}
+        </div>
+        <p class="all">
+          <Button href="/projects/" variant="ghost">All projects<Icon name="arrow" /></Button>
+        </p>
+      </section>
+    )
+  }
 </BaseLayout>
 
 <style>
-  .hero { padding-block: var(--sp-8); }
+  .hero {
+    padding-block: var(--sp-7) var(--sp-6);
+    text-align: center;
+  }
+  h1 { margin-bottom: var(--sp-5); }
+  .bio {
+    max-width: 40rem;
+    margin: 0 auto var(--sp-6);
+    font-size: 1.25rem; /* old .desc: 20px */
+    line-height: 1.6;
+  }
+  .bio.todo {
+    display: inline-block;
+    font-size: var(--fs-sm);
+    color: var(--c-terracotta);
+    border: 1px dashed var(--c-terracotta);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-2) var(--sp-4);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .featured { padding-top: var(--sp-6); }
+  /* One column on small screens; one column per featured project (max 3) on wide ones,
+     so three cards never wrap into an orphaned row. */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-5);
+  }
+  @media (min-width: 56rem) {
+    .cards { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); }
+  }
+  .all {
+    margin: var(--sp-6) 0 0;
+    text-align: center;
+  }
+  @media (max-width: 30rem) {
+    .bio { font-size: 1.125rem; } /* old mobile .desc: 18px */
+  }
 </style>
