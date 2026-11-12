@@ -1,19 +1,17 @@
-# Interests shown at the top of /projects, in this order. Edit in Pages CMS ("Project interests").
-# `blurb`: a few sentences in your own words. Blank lines separate paragraphs.
-# `tag` (optional): links the interest to that tag's project list, once a published project uses it.
-- title: Simulation
-  blurb: "TODO(Justin): a few sentences on what draws you to simulation."
+- draft: false
+  title: Simulation
+  blurb: Not only do you learn how something works, you also learn how it doesn't.
   tag: simulation
-  draft: true
-- title: Game development
-  blurb: "TODO(Justin): a few sentences on your interest in game development."
+- draft: false
+  title: Game development
+  blurb: Games have always been a major hobby of mine, and I love filling niches I
+    can't find or experimenting with ideas.
   tag: game-dev
-  draft: true
-- title: Web development
+- draft: true
+  title: Web development
   blurb: "TODO(Justin): a few sentences on your interest in web development."
   tag: web
-  draft: true
-- title: Music
-  blurb: "TODO(Justin): a few sentences on your interest in music."
+- draft: false
+  title: Music
+  blurb: Writing songs, playing guitar
   tag: music
-  draft: true
