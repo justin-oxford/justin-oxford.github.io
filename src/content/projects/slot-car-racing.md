@@ -12,6 +12,7 @@ tags:
   - physics
 draft: false
 featured: true
+cover: ./images/officiallogov2alpha.png
 ---
 A slot car racing game at 1:32 scale, built in Unity.
 
