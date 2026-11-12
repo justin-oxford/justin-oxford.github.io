@@ -7,11 +7,12 @@
   blurb: Games have always been a major hobby of mine, and I love filling niches I
     can't find or experimenting with ideas.
   tag: game-dev
-- draft: true
-  title: Web development
-  blurb: "TODO(Justin): a few sentences on your interest in web development."
-  tag: web
 - draft: false
+  title: Web development
+  blurb: I like creating practical tools, whether they be for productivity, fun,
+    or just to try something interesting.
+  tag: web
+- draft: true
   title: Music
   blurb: Writing songs, playing guitar
   tag: music
