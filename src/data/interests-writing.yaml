@@ -1,14 +1,12 @@
-# Interests shown at the top of /writing, in this order. Edit in Pages CMS ("Writing interests").
-# `blurb`: a few sentences in your own words. Blank lines separate paragraphs.
-- title: Philosophy
-  blurb: "TODO(Justin): a few sentences on what draws you to philosophy."
-  draft: true
-- title: AI
-  blurb: "TODO(Justin): a few sentences on your interest in AI."
-  draft: true
-- title: Theology
-  blurb: "TODO(Justin): a few sentences on your interest in theology."
-  draft: true
-- title: Creative writing
-  blurb: "TODO(Justin): a few sentences on your creative writing."
-  draft: true
+- draft: false
+  title: Philosophy
+  blurb: Consciousness, Mind, and Ethics
+- draft: false
+  title: AI
+  blurb: Ethics, Consciousness
+- draft: false
+  title: History/Theology
+  blurb: Early Christian Church History
+- draft: false
+  title: Creative writing
+  blurb: Short Stories, Philosophical Narratives
